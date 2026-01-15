@@ -11,10 +11,10 @@ export type Education = {
 }
 
 export const profile = {
-  name: 'Ronjie Diafante Man-on',
+  name: 'Ronjie Man-on',
   shortName: 'Ronjie',
   initials: 'RDM',
-  title: 'Software Engineer | Mobile Application Development',
+  title: 'Software Engineer | Mobile Application Developer',
   focus: 'Android (Kotlin/Jetpack Compose) / iOS (Swift/SwiftUI)',
   location: 'Cebu City, Cebu',
   phone: '+63 907 828 1150',
