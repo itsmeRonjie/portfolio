@@ -50,7 +50,6 @@
       <section class="mt-10 space-y-4">
         <h2 class="text-xl font-semibold text-white">How We Use Information</h2>
         <ul class="list-disc space-y-2 pl-5 text-sm text-slate-300">
-          <li>Provide core budgeting and tracking features.</li>
           <li>Improve stability and fix bugs.</li>
           <li>Respond to support requests.</li>
           <li>Show ads and measure performance if ads are introduced.</li>
