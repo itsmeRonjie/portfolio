@@ -18,6 +18,14 @@ npm run generate
 npm run preview
 ```
 
+## Deployment (Vercel GitHub Actions)
+This repo includes a workflow that deploys to Vercel on every push to `main`.
+
+Required GitHub secrets:
+- `VERCEL_TOKEN` - Create from Vercel Account Settings → Tokens.
+- `VERCEL_ORG_ID` - Vercel team/org ID (Project Settings → General).
+- `VERCEL_PROJECT_ID` - Vercel project ID (Project Settings → General).
+
 ## Project Structure
 - `pages/` - Routes (`/`, `/projects`, `/contact`)
 - `components/` - Reusable UI sections and cards
