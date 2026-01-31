@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      siteUrl: 'https://portfolio-rdmanon.vercel.app'
+      siteUrl: 'https://ronjiemanon.com'
     }
   },
   typescript: {
