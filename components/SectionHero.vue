@@ -17,6 +17,9 @@
         Ronjie Man-on is a software engineer and mobile application developer focused on Android and iOS.
       </p>
       <p class="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+        Some platforms may list this name as Ronjie Manon, but this portfolio is maintained by Ronjie Man-on.
+      </p>
+      <p class="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
         {{ profile.summary }}
       </p>
       <div class="flex flex-wrap gap-2">

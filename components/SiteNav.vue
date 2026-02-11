@@ -101,6 +101,7 @@ type NavItem = {
 }
 
 const navItems: NavItem[] = [
+  { label: 'About', to: '/about' },
   { label: 'Work', to: '/#work' },
   { label: 'Toolbox', to: '/#toolbox' },
   { label: 'Contact', to: '/#contact' }
