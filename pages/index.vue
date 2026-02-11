@@ -23,8 +23,9 @@ import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
 
 const profile = useProfile()
 
-const title = `${profile.name} | Software Engineer`
-const description = `${profile.name} is a software engineer and mobile application developer specializing in Android and iOS products.`
+const title = `${profile.name} | Mobile App Developer`
+const description =
+  `${profile.name} builds Android apps with Kotlin/Jetpack Compose and iOS apps with Swift/SwiftUI, focused on fast and reliable user experiences.`
 
 useSeoMeta({
   title,

@@ -31,7 +31,7 @@ const websiteSchema = computed(() => ({
 }))
 
 useHead(() => ({
-  titleTemplate: (titleChunk) => (titleChunk ? `${titleChunk} - ${profile.name}` : profile.name),
+  titleTemplate: (titleChunk) => titleChunk || profile.name,
   htmlAttrs: { lang: 'en' },
   link: [{ rel: 'canonical', href: canonicalUrl.value }],
   script: [
