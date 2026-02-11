@@ -8,8 +8,14 @@
     <div class="space-y-6 animate-stagger-in will-change-transform" :style="copyColumnStyle">
       <p class="ui-eyebrow">Mobile Engineering</p>
       <h1 class="text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-        Shipping Android and iOS products with studio-level polish.
+        {{ profile.name }}
       </h1>
+      <h2 class="text-2xl font-semibold leading-tight text-slate-100 sm:text-3xl lg:text-4xl">
+        Shipping Android and iOS products with studio-level polish.
+      </h2>
+      <p class="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+        Ronjie Man-on is a software engineer and mobile application developer focused on Android and iOS.
+      </p>
       <p class="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
         {{ profile.summary }}
       </p>

@@ -22,7 +22,7 @@ export const profile = {
   links: {
     linkedin: 'https://linkedin.com/in/ronjiemanon',
     github: 'https://github.com/itsmeronjie',
-    portfolio: 'https://portfolio-rdmanon.vercel.app'
+    portfolio: 'https://ronjiemanon.com'
   },
   summary:
     'Software engineer specializing in native Android and iOS development. Builds maintainable apps using modern UI frameworks (Jetpack Compose and SwiftUI), MVVM, and Clean Architecture, collaborating in Agile teams with designers, backend engineers, and QA to ship reliable features.',

@@ -20,4 +20,18 @@ import SectionPlayStore from '~/components/SectionPlayStore.vue'
 import SectionWork from '~/components/SectionWork.vue'
 import SectionToolbox from '~/components/SectionToolbox.vue'
 import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
+
+const profile = useProfile()
+
+const title = `${profile.name} | Software Engineer`
+const description = `${profile.name} is a software engineer and mobile application developer specializing in Android and iOS products.`
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  twitterTitle: title,
+  twitterDescription: description
+})
 </script>
