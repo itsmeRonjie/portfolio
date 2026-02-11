@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "portfolio-rdmanon.vercel.app"
+        }
+      ],
+      "destination": "https://ronjiemanon.com/$1",
+      "permanent": true
+    }
+  ]
+}
