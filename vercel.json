@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "portfolio-rdmanon.vercel.app"
+          "value": "(.*)\\.vercel\\.app"
         }
       ],
       "destination": "https://ronjiemanon.com/$1",
