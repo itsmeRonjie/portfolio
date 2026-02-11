@@ -7,15 +7,16 @@ A dark-themed developer portfolio built with Nuxt 3 and Tailwind CSS. Content is
 
 ## Setup
 ```bash
-npm install
-npm run dev
+corepack enable
+pnpm install
+pnpm dev
 ```
 
 ## Build
 ```bash
-npm run build
-npm run generate
-npm run preview
+pnpm build
+pnpm generate
+pnpm preview
 ```
 
 ## Deployment (Vercel GitHub Actions)

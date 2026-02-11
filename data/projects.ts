@@ -20,7 +20,7 @@ export const projects: Project[] = [
       'Result: Production-ready features with reusable components.'
     ],
     tags: ['Android', 'Kotlin', 'Jetpack Compose'],
-    accent: 'from-purple-500/25 via-fuchsia-500/15 to-transparent',
+    accent: 'from-accent/30 via-accent/12 to-transparent',
     githubOrg: 'android-dev-studio',
     link: 'https://github.com/orgs/android-dev-studio/repositories',
     linkLabel: 'View GitHub org'
@@ -34,7 +34,7 @@ export const projects: Project[] = [
       'Result: Production-ready features with reusable components.'
     ],
     tags: ['iOS', 'Swift', 'SwiftUI'],
-    accent: 'from-indigo-500/20 via-purple-500/20 to-transparent',
+    accent: 'from-accent-2/30 via-accent-2/12 to-transparent',
     githubOrg: 'ios-dev-studio',
     link: 'https://github.com/orgs/ios-dev-studio/repositories',
     linkLabel: 'View GitHub org'
@@ -48,7 +48,7 @@ export const projects: Project[] = [
       'Result: Consistent behavior across platforms with shared modules.'
     ],
     tags: ['KMP', 'Kotlin', 'Multiplatform'],
-    accent: 'from-sky-500/20 via-purple-500/20 to-transparent',
+    accent: 'from-accent/20 via-accent-2/16 to-transparent',
     githubOrg: 'kmp-dev-studio',
     link: 'https://github.com/orgs/kmp-dev-studio/repositories',
     linkLabel: 'View GitHub org'

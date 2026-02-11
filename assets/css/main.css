@@ -1,28 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --bg: #070b11;
+  --bg-elevated: #0d141c;
+  --panel: rgba(13, 20, 30, 0.78);
+  --panel-strong: rgba(9, 15, 23, 0.92);
+  --border: rgba(142, 159, 181, 0.24);
+  --text: #e6edf3;
+  --text-muted: #9fb0c1;
+  --android: #3ddc84;
+  --ios: #5ac8fa;
+  --terminal: #7ee787;
+  --focus-ring: #5ac8fa;
   color-scheme: dark;
 }
 
 body {
   min-height: 100vh;
-  background-color: #0b0713;
+  font-family: 'Sora', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--bg);
   background-image:
-    radial-gradient(600px at 12% 12%, rgba(124, 58, 237, 0.28), transparent 60%),
-    radial-gradient(700px at 88% 16%, rgba(168, 85, 247, 0.22), transparent 55%),
-    linear-gradient(180deg, #0b0713 0%, #12081f 55%, #0b0713 100%);
-  color: #f3f4f6;
+    radial-gradient(560px at 8% 10%, rgba(61, 220, 132, 0.16), transparent 62%),
+    radial-gradient(700px at 90% 12%, rgba(90, 200, 250, 0.16), transparent 58%),
+    radial-gradient(880px at 50% 115%, rgba(84, 153, 225, 0.11), transparent 68%),
+    linear-gradient(180deg, #070b11 0%, #0b1018 56%, #070b11 100%);
+  color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.02em;
+}
+
+.font-mono,
+code,
+pre {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.45);
+  background: rgba(90, 200, 250, 0.35);
 }
 
 :focus-visible {
-  outline: 2px solid #a855f7;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+@layer components {
+  .ui-panel {
+    @apply rounded-3xl border border-border/70 bg-surface p-6 shadow-panel backdrop-blur-md;
+  }
+
+  .ui-panel-strong {
+    @apply rounded-3xl border border-border/70 bg-surface-strong p-6 shadow-panel backdrop-blur-md;
+  }
+
+  .ui-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-border/65 bg-surface-strong px-3 py-1 text-xs font-medium text-slate-200;
+  }
+
+  .ui-eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.26em] text-slate-400;
+  }
+
+  .ui-cta-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent/50 bg-accent px-5 py-2.5 text-sm font-semibold text-[#052414] shadow-glow transition hover:-translate-y-0.5 hover:brightness-105;
+  }
+
+  .ui-cta-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-surface-strong px-5 py-2.5 text-sm font-semibold text-slate-100 transition hover:border-accent-2/80 hover:text-white;
+  }
+
+  .ui-link {
+    @apply text-sm font-semibold text-accent-2 transition hover:text-white;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -13,39 +13,46 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#0b0713',
-        'canvas-2': '#12081f',
-        surface: 'rgba(17, 12, 28, 0.7)',
-        'surface-strong': 'rgba(24, 17, 38, 0.9)',
-        border: 'rgba(160, 139, 214, 0.18)',
-        accent: '#7c3aed',
-        'accent-2': '#a855f7',
-        glow: '#8b5cf6'
+        canvas: '#070b11',
+        'canvas-2': '#0d141c',
+        surface: 'rgba(13, 20, 30, 0.78)',
+        'surface-strong': 'rgba(9, 15, 23, 0.92)',
+        border: 'rgba(142, 159, 181, 0.24)',
+        accent: '#3ddc84',
+        'accent-2': '#5ac8fa',
+        glow: '#7edab1',
+        android: '#3ddc84',
+        ios: '#5ac8fa',
+        terminal: '#7ee787'
       },
       fontFamily: {
-        sans: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+        sans: ['"Sora"', '"Manrope"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
       },
       boxShadow: {
-        glow: '0 0 40px rgba(124, 58, 237, 0.35)'
+        panel: '0 24px 70px rgba(1, 6, 12, 0.45)',
+        glow: '0 0 42px rgba(61, 220, 132, 0.28)',
+        android: '0 0 45px rgba(61, 220, 132, 0.3)',
+        ios: '0 0 45px rgba(90, 200, 250, 0.25)'
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' }
+        'stagger-in': {
+          '0%': { opacity: '0', transform: 'translateY(14px) scale(0.985)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
         },
-        'pulse-soft': {
-          '0%, 100%': { opacity: '0.6' },
-          '50%': { opacity: '1' }
+        'drawer-in': {
+          '0%': { opacity: '0', transform: 'translateX(16px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' }
         },
-        'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' }
+        'scan-pulse': {
+          '0%, 100%': { opacity: '0.42', transform: 'scaleX(0.9)' },
+          '50%': { opacity: '0.8', transform: 'scaleX(1)' }
         }
       },
       animation: {
-        float: 'float 8s ease-in-out infinite',
-        'pulse-soft': 'pulse-soft 6s ease-in-out infinite',
-        'fade-up': 'fade-up 0.6s ease-out both'
+        'stagger-in': 'stagger-in 0.55s ease-out both',
+        'drawer-in': 'drawer-in 0.25s ease-out both',
+        'scan-pulse': 'scan-pulse 2.6s ease-in-out infinite'
       }
     }
   },

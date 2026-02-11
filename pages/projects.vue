@@ -3,10 +3,10 @@
     <SiteNav />
     <main class="mx-auto max-w-6xl px-6 pb-16 pt-12">
       <header class="space-y-4">
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Projects</p>
-        <h1 class="text-3xl font-semibold text-white sm:text-4xl">Projects by platform</h1>
+        <p class="ui-eyebrow">Project Index</p>
+        <h1 class="text-3xl font-semibold text-white sm:text-4xl">Mobile Studio Project Board</h1>
         <p class="max-w-2xl text-sm text-slate-300">
-          Highlights from my iOS, Android, Kotlin Multiplatform, and backend work.
+          Platform-focused repositories spanning Android, iOS, and shared Kotlin Multiplatform systems.
         </p>
       </header>
 
@@ -14,11 +14,11 @@
         <button
           v-for="org in githubOrgs"
           :key="org.id"
-          class="rounded-full border px-4 py-2 text-sm font-semibold transition"
+          class="rounded-full border px-4 py-2 font-mono text-xs font-semibold tracking-[0.04em] transition"
           :class="
             activeOrgId === org.id
-              ? 'border-accent/80 bg-accent/20 text-white shadow-glow'
-              : 'border-border/70 bg-surface text-slate-200 hover:border-accent/60'
+              ? 'border-accent/55 bg-accent/15 text-accent shadow-glow'
+              : 'border-border/70 bg-surface text-slate-200 hover:border-accent-2/45'
           "
           type="button"
           @click="activeOrgId = org.id"
@@ -27,14 +27,14 @@
         </button>
       </div>
 
-      <p class="mt-4 text-sm text-slate-400">{{ activeOrg.description }}</p>
+      <p class="mt-4 text-sm text-slate-300">{{ activeOrg.description }}</p>
 
       <div class="mt-8 grid gap-4 md:grid-cols-2">
         <template v-if="pending">
           <div
             v-for="skeleton in skeletonCards"
             :key="skeleton"
-            class="rounded-2xl border border-border/60 bg-surface p-5 animate-pulse"
+            class="ui-panel !rounded-2xl !p-5 animate-pulse"
           >
             <div class="h-4 w-1/2 rounded-full bg-white/10" />
             <div class="mt-3 h-3 w-full rounded-full bg-white/5" />
@@ -47,12 +47,12 @@
         </template>
 
         <template v-else-if="error">
-          <div class="rounded-2xl border border-border/60 bg-surface p-6 md:col-span-2">
+          <div class="ui-panel md:col-span-2">
             <p class="text-sm text-slate-300">
               Unable to load repositories right now. GitHub may be rate limiting the request.
             </p>
             <button
-              class="mt-4 rounded-full border border-border/70 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-accent/80"
+              class="ui-cta-secondary mt-4 !px-4 !py-2"
               type="button"
               @click="refresh"
             >
@@ -65,24 +65,26 @@
           <article
             v-for="repo in visibleRepos"
             :key="repo.id"
-            class="rounded-2xl border border-border/60 bg-surface p-5 transition hover:border-accent/60"
+            class="ui-panel !rounded-2xl !p-5 transition hover:border-accent/40"
           >
             <div class="flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-lg font-semibold text-white">{{ repo.name }}</h2>
                 <p class="mt-2 text-sm text-slate-300">{{ repo.description }}</p>
               </div>
-              <span class="text-xs text-slate-400">Updated {{ formatDate(repo.updatedAt) }}</span>
+              <span class="ui-chip !px-2 !py-0.5 !text-[10px] font-mono text-slate-300">
+                Updated {{ formatDate(repo.updatedAt) }}
+              </span>
             </div>
             <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-400">
-              <span class="rounded-full border border-border/60 bg-black/30 px-3 py-1">
+              <span class="ui-chip border-accent/40 bg-accent/10 font-mono text-accent">
                 {{ repo.language }}
               </span>
-              <span class="rounded-full border border-border/60 bg-black/30 px-3 py-1">
+              <span class="ui-chip font-mono">
                 Stars {{ repo.stars }}
               </span>
               <a
-                class="ml-auto text-sm font-semibold text-accent-2 transition hover:text-white"
+                class="ui-link ml-auto"
                 :href="repo.htmlUrl"
                 target="_blank"
                 rel="noreferrer"
@@ -91,12 +93,12 @@
               </a>
             </div>
           </article>
-          <div v-if="repos.length === 0" class="rounded-2xl border border-border/60 bg-surface p-6 md:col-span-2">
+          <div v-if="repos.length === 0" class="ui-panel md:col-span-2">
             <p class="text-sm text-slate-300">No public repositories found for this org.</p>
           </div>
           <div v-if="canLoadMoreRepos" class="flex justify-center md:col-span-2">
             <button
-              class="rounded-full border border-border/70 px-5 py-2 text-sm font-semibold text-slate-100 transition hover:border-accent/80"
+              class="ui-cta-secondary"
               type="button"
               @click="loadMoreRepos"
             >
@@ -109,26 +111,26 @@
       <section class="mt-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Google Play</p>
-            <h2 class="text-2xl font-semibold text-white">Play Store listings</h2>
+            <p class="ui-eyebrow">Google Play</p>
+            <h2 class="mt-2 text-2xl font-semibold text-white">Published Mobile Apps</h2>
             <p class="mt-2 max-w-2xl text-sm text-slate-300">
-              Latest Google Play releases and updates.
+              Live listing snapshots from the latest Android releases.
             </p>
           </div>
           <a
             v-if="playStoreDeveloperUrl"
-            class="text-sm font-semibold text-accent-2 transition hover:text-white"
+            class="ui-link"
             :href="playStoreDeveloperUrl"
             target="_blank"
             rel="noreferrer"
           >
-            View developer profile -&gt;
+            Open developer profile -&gt;
           </a>
         </div>
 
         <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <template v-if="!hasPlayStoreDeveloper">
-            <div class="rounded-2xl border border-border/60 bg-surface p-6 md:col-span-2 lg:col-span-3">
+            <div class="ui-panel md:col-span-2 lg:col-span-3">
               <p class="text-sm text-slate-300">
                 Add your Play Store developer ID in <span class="font-semibold">data/playStore.ts</span> to enable
                 listings.
@@ -140,7 +142,7 @@
             <div
               v-for="skeleton in playStoreSkeletons"
               :key="skeleton"
-              class="rounded-2xl border border-border/60 bg-surface p-5 animate-pulse"
+              class="ui-panel !rounded-2xl !p-5 animate-pulse"
             >
               <div class="flex items-start gap-4">
                 <div class="h-12 w-12 rounded-xl bg-white/10" />
@@ -158,12 +160,12 @@
           </template>
 
           <template v-else-if="playStoreError">
-            <div class="rounded-2xl border border-border/60 bg-surface p-6 md:col-span-2 lg:col-span-3">
+            <div class="ui-panel md:col-span-2 lg:col-span-3">
               <p class="text-sm text-slate-300">
                 Unable to load Play Store listings right now. Try again in a moment.
               </p>
               <button
-                class="mt-4 rounded-full border border-border/70 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-accent/80"
+                class="ui-cta-secondary mt-4 !px-4 !py-2"
                 type="button"
                 @click="refreshPlayStore"
               >
@@ -176,7 +178,7 @@
             <PlayStoreAppCard v-for="app in playStoreApps" :key="app.id" :app="app" />
             <div
               v-if="playStoreApps.length === 0"
-              class="rounded-2xl border border-border/60 bg-surface p-6 md:col-span-2 lg:col-span-3"
+              class="ui-panel md:col-span-2 lg:col-span-3"
             >
               <p class="text-sm text-slate-300">No Play Store apps found for this developer.</p>
             </div>

@@ -1,8 +1,8 @@
 <template>
-  <article class="rounded-2xl border border-border/60 bg-surface p-5 transition hover:border-accent/60">
+  <article class="ui-panel !rounded-2xl !p-5 transition hover:border-accent-2/45">
     <div class="flex items-start gap-4">
       <div
-        class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-black/30"
+        class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-surface-strong"
       >
         <img
           v-if="app.icon"
@@ -17,11 +17,11 @@
       <div class="min-w-0 flex-1 space-y-2">
         <div class="flex flex-wrap items-start justify-between gap-2">
           <h3 class="text-lg font-semibold text-white">{{ app.title }}</h3>
-          <span v-if="app.rating !== undefined" class="text-xs text-slate-400">
+          <span v-if="app.rating !== undefined" class="ui-chip border-accent-2/35 bg-accent-2/10 !px-2 !py-0.5 !text-[10px] font-mono text-accent-2">
             Rating {{ formatRating(app.rating) }}
           </span>
         </div>
-        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Description</p>
+        <p class="ui-eyebrow text-slate-500">Description</p>
         <p class="text-sm text-slate-300">
           {{ app.summary || 'No description available.' }}
         </p>
@@ -30,18 +30,18 @@
     <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-400">
       <span
         v-if="app.category"
-        class="rounded-full border border-border/60 bg-black/30 px-3 py-1"
+        class="ui-chip font-mono !px-2.5 !py-1 !text-[10px]"
       >
         {{ app.category }}
       </span>
       <span
         v-if="app.reviewCount !== undefined"
-        class="rounded-full border border-border/60 bg-black/30 px-3 py-1"
+        class="ui-chip font-mono !px-2.5 !py-1 !text-[10px]"
       >
         {{ formatReviews(app.reviewCount) }} reviews
       </span>
       <a
-        class="ml-auto text-sm font-semibold text-accent-2 transition hover:text-white"
+        class="ui-link ml-auto"
         :href="app.link"
         target="_blank"
         rel="noreferrer"
