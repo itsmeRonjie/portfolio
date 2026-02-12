@@ -33,27 +33,5 @@
       "destination": "https://ronjiemanon.com/$1",
       "permanent": true
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/privacy-policy",
-      "has": [
-        {
-          "type": "host",
-          "value": "alarmclock\\.ronjiemanon\\.com"
-        }
-      ],
-      "destination": "/alarm-clock/privacy-policy"
-    },
-    {
-      "source": "/privacy-policy",
-      "has": [
-        {
-          "type": "host",
-          "value": "moneymanager\\.ronjiemanon\\.com"
-        }
-      ],
-      "destination": "/money-manager/privacy-policy"
-    }
   ]
 }
