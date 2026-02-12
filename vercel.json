@@ -1,6 +1,28 @@
 {
   "redirects": [
     {
+      "source": "/alarm-clock/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?ronjiemanon\\.com"
+        }
+      ],
+      "destination": "https://alarmclock.ronjiemanon.com/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/money-manager/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?ronjiemanon\\.com"
+        }
+      ],
+      "destination": "https://moneymanager.ronjiemanon.com/privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {
@@ -10,6 +32,28 @@
       ],
       "destination": "https://ronjiemanon.com/$1",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "alarmclock\\.ronjiemanon\\.com"
+        }
+      ],
+      "destination": "/alarm-clock/privacy-policy"
+    },
+    {
+      "source": "/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "moneymanager\\.ronjiemanon\\.com"
+        }
+      ],
+      "destination": "/money-manager/privacy-policy"
     }
   ]
 }

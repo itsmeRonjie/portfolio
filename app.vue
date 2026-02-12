@@ -8,11 +8,44 @@
 const profile = useProfile()
 const route = useRoute()
 const config = useRuntimeConfig()
+const requestUrl = useRequestURL()
 const siteTitle = `${profile.name} | ${profile.title}`
 const description = profile.summary
 const siteUrl = computed(() => config.public.siteUrl.replace(/\/$/, ''))
-const ogImage = computed(() => `${siteUrl.value}/og-image.svg`)
-const canonicalUrl = computed(() => `${siteUrl.value}${route.path}`)
+const requestHost = computed(() => requestUrl.hostname.toLowerCase())
+const isMoneyManagerPolicyRoute = computed(
+  () =>
+    route.path === '/money-manager/privacy-policy' ||
+    (route.path === '/privacy-policy' && requestHost.value === 'moneymanager.ronjiemanon.com')
+)
+const isAlarmClockPolicyRoute = computed(
+  () =>
+    route.path === '/alarm-clock/privacy-policy' ||
+    (route.path === '/privacy-policy' && requestHost.value === 'alarmclock.ronjiemanon.com')
+)
+const canonicalUrl = computed(() => {
+  if (isMoneyManagerPolicyRoute.value) {
+    return 'https://moneymanager.ronjiemanon.com/privacy-policy'
+  }
+
+  if (isAlarmClockPolicyRoute.value) {
+    return 'https://alarmclock.ronjiemanon.com/privacy-policy'
+  }
+
+  return `${siteUrl.value}${route.path}`
+})
+
+const ogImage = computed(() => {
+  if (isMoneyManagerPolicyRoute.value) {
+    return 'https://moneymanager.ronjiemanon.com/og-image.svg'
+  }
+
+  if (isAlarmClockPolicyRoute.value) {
+    return 'https://alarmclock.ronjiemanon.com/og-image.svg'
+  }
+
+  return `${siteUrl.value}/og-image.svg`
+})
 
 const personSchema = computed(() => ({
   '@context': 'https://schema.org',
