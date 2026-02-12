@@ -5,7 +5,7 @@
       <header class="space-y-3">
         <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Legal</p>
         <h1 class="text-3xl font-semibold text-white sm:text-4xl">Money Manager Privacy Policy</h1>
-        <p class="text-sm text-slate-300">Last updated: 2026-01-31</p>
+        <p class="text-sm text-slate-300">Last updated: 2026-02-12</p>
       </header>
 
       <section class="mt-10 space-y-4 text-sm text-slate-300">
@@ -33,11 +33,11 @@
             </p>
           </div>
           <div>
-            <p class="font-semibold text-slate-200">Advertising data (future)</p>
+            <p class="font-semibold text-slate-200">Advertising data (Google AdMob)</p>
             <p>
-              If we add ads (for example, Google AdMob), ad partners may collect or receive the Advertising ID, IP
-              address, device/app details, coarse location from IP, ad impressions, and ad interaction data to serve
-              and measure ads.
+              We show ads using Google AdMob. Ad partners may collect or receive the Advertising ID, IP address,
+              device/app details, coarse location from IP, ad impressions, and ad interaction data to serve and
+              measure ads.
             </p>
           </div>
           <div>
@@ -52,7 +52,7 @@
         <ul class="list-disc space-y-2 pl-5 text-sm text-slate-300">
           <li>Improve stability and fix bugs.</li>
           <li>Respond to support requests.</li>
-          <li>Show ads and measure performance if ads are introduced.</li>
+          <li>Show ads and measure ad performance.</li>
         </ul>
       </section>
 
@@ -69,7 +69,8 @@
         <h2 class="text-xl font-semibold text-white">Sharing of Information</h2>
         <p class="text-sm text-slate-300">
           We do not sell your data. We share limited data with service providers like Firebase to help operate and
-          improve the app. If ads are added, ad partners may collect data through their SDKs to provide and measure ads.
+          improve the app. Because ads are enabled, ad partners may collect data through their SDKs to provide and
+          measure ads.
         </p>
       </section>
 
