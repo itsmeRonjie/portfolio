@@ -23,6 +23,28 @@
       "permanent": true
     },
     {
+      "source": "/alarm-clock/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "alarmclock\\.ronjiemanon\\.com"
+        }
+      ],
+      "destination": "https://alarmclock.ronjiemanon.com/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/money-manager/privacy-policy",
+      "has": [
+        {
+          "type": "host",
+          "value": "moneymanager\\.ronjiemanon\\.com"
+        }
+      ],
+      "destination": "https://moneymanager.ronjiemanon.com/privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {
