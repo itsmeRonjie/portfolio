@@ -75,26 +75,23 @@
                   />
                   <div class="absolute left-1/2 top-[18px] z-10 h-2 w-2 -translate-x-1/2 rounded-full bg-slate-500/70" aria-hidden="true" />
 
-                  <Transition name="preview-fade" mode="out-in">
-                    <img
-                      v-if="previewShot"
-                      :key="`preview-${previewShot.id}`"
-                      class="h-full w-full object-cover object-top"
-                      :src="previewShot.src"
-                      :alt="previewShot.alt"
-                      loading="eager"
-                      decoding="async"
-                    />
-                    <div
-                      v-else
-                      key="preview-empty"
-                      class="flex h-full w-full items-center justify-center bg-gradient-to-b from-[#0f2c28] via-[#091d1a] to-[#071412] text-xs font-semibold text-[#99c4bd]"
-                    >
-                      Replace hero screenshot
-                    </div>
-                  </Transition>
+                  <img
+                    v-if="previewShot"
+                    :key="`preview-${previewShot.id}`"
+                    class="h-full w-full object-cover object-top [filter:none]"
+                    :src="previewShot.src"
+                    :alt="previewShot.alt"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <div
+                    v-else
+                    key="preview-empty"
+                    class="flex h-full w-full items-center justify-center bg-gradient-to-b from-[#0f2c28] via-[#091d1a] to-[#071412] text-xs font-semibold text-[#99c4bd]"
+                  >
+                    Replace hero screenshot
+                  </div>
 
-                  <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/12 to-transparent" aria-hidden="true" />
                   <div class="absolute inset-x-0 bottom-3 flex justify-center" aria-hidden="true">
                     <div class="h-1.5 w-28 rounded-full bg-white/25" />
                   </div>
@@ -332,25 +329,9 @@ onBeforeUnmount(() => {
   }
 }
 
-.preview-fade-enter-active,
-.preview-fade-leave-active {
-  transition:
-    opacity 420ms ease,
-    transform 420ms ease;
-}
-
-.preview-fade-enter-from,
-.preview-fade-leave-to {
-  opacity: 0;
-  transform: scale(1.015);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-mm-rise,
-  .preview-fade-enter-active,
-  .preview-fade-leave-active {
+  .animate-mm-rise {
     animation: none;
-    transition: none;
   }
 }
 </style>
