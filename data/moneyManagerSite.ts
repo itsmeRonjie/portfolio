@@ -46,65 +46,91 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
   pageTitle: 'MoneyManager | Smart Wealth Tracking',
   heroScreenshotId: 'home',
   heroTitle: 'MoneyManager',
-  heroSubtitle: 'Smart wealth tracking for daily spending, budgets, bills, and goals.',
+  heroSubtitle: 'A clean, fast, offline-first finance app that helps you track, plan, and grow your money.',
   heroDescription:
-    'Track income, expenses, accounts, and savings in one focused workspace. MoneyManager is built for clear monthly visibility and fast day-to-day finance updates.',
+    'Track income, expenses, transfers, and fees across your accounts, then monitor balances and monthly progress at a glance. Add transactions quickly with templates, recurring rules, and smart suggestions.',
   longDescription:
-    'MoneyManager helps you monitor cash flow, manage accounts, follow budgets, and stay ahead of recurring bills. Review detailed spending and net worth trends, then take action with clear summaries and transaction-level detail.',
+    'Plan ahead with budgets, bill reminders, savings goals, sinking funds, and debt payoff planning. Analyze your finances with monthly reports, category/tag/merchant breakdowns, trends, net worth tracking, and investment snapshots. Keep detailed records with notes, tags, receipt attachments, and OCR assistance.',
   playStoreUrl: 'https://play.google.com/store/apps/details?id=itsme.ronjie.moneymanager',
   supportEmail: 'manon.ronjiediafante@gmail.com',
   privacyPath: '/privacy-policy',
   supportPath: '/support',
   trustBullets: [
-    'Finance records are stored locally on your device.',
-    'No account is required to use core tracking features.',
-    'Privacy policy and support are available directly from the app website.'
+    'Offline-first by default: your data stays on your device.',
+    'No account required for core tracking and planning.',
+    'Privacy options and optional PIN/biometric app lock are available in-app.'
   ],
-  statChips: ['Transactions', 'Budgets', 'Bills', 'Reports', 'Savings Goals', 'Accounts'],
+  statChips: ['Offline-first', 'No account required', 'Budgets', 'Bills', 'Net worth', 'Investments'],
   features: [
     {
-      id: 'transactions',
-      title: 'Fast transaction tracking',
+      id: 'accounts-live-balances',
+      title: 'Multiple accounts with live balances',
       description:
-        'Capture income, expense, and transfer activity with clear list filters so month-end review takes minutes, not hours.',
-      highlights: ['Income / Expense / Transfer filters', 'Daily grouping and totals', 'Quick add actions']
+        'Track all your wallets and cards in one place and see updated balances as you record activity.',
+      highlights: ['Multiple account support', 'At-a-glance balances', 'Clear account overview']
     },
     {
-      id: 'budgets',
-      title: 'Monthly budget control',
+      id: 'transaction-types',
+      title: 'Income, expense, transfer, and fee tracking',
       description:
-        'Track category limits and see overspent versus on-track status at a glance with progress-driven budget cards.',
-      highlights: ['Remaining budget ring', 'Overspent alerts', 'Category-level progress']
+        'Capture complete cash movement with proper transaction types so records stay accurate.',
+      highlights: ['Income and expense entries', 'Transfers between accounts', 'Fee tracking support']
     },
     {
-      id: 'bills',
-      title: 'Recurring bill planning',
+      id: 'planning-suite',
+      title: 'Budgets, bills, goals, and debt planning',
       description:
-        'Plan upcoming bills, monitor due dates, and filter by paid, overdue, or subscription status to avoid missed payments.',
-      highlights: ['Upcoming / Overdue views', 'Due-date countdowns', 'Recurring setup'],
-      premium: true
+        'Plan monthly spending and long-term priorities with budgeting, bill reminders, savings targets, and debt payoff tools.',
+      highlights: ['Budget management', 'Bill tracking and reminders', 'Savings + debt planning']
     },
     {
-      id: 'reports',
-      title: 'Clear spending and net worth reports',
+      id: 'quick-entry',
+      title: 'Recurring transactions and quick templates',
       description:
-        'Understand where money goes using chart-driven breakdowns, trends, and top merchant summaries across selected periods.',
-      highlights: ['Category breakdown chart', 'Spending trend timeline', 'Net worth and investment tabs']
+        'Save time when adding entries using templates, recurring rules, and smart suggestions.',
+      highlights: ['Reusable templates', 'Recurring transaction rules', 'Faster data entry']
     },
     {
-      id: 'goals',
-      title: 'Savings goals that stay visible',
+      id: 'advanced-reports',
+      title: 'Advanced reports, net worth, and investments',
       description:
-        'Track progress toward multiple goals with target dates and saved-versus-target snapshots in one list.',
-      highlights: ['Goal progress bars', 'Target-date tracking', 'Multiple goals in one view']
+        'Analyze your money with monthly reports, trends, and snapshots for net worth and investments.',
+      highlights: ['Monthly report views', 'Net worth tracking', 'Investment snapshots']
     },
     {
-      id: 'accounts',
-      title: 'Account-level balance visibility',
+      id: 'search-filters',
+      title: 'Transaction search, filters, and saved presets',
       description:
-        'Monitor wallets and cards with account-specific balances so cash position and debt movement remain easy to follow.',
-      highlights: ['Cash and card cards', 'Balance snapshots', 'Account management'],
-      premium: true
+        'Find exactly what you need with detailed search, powerful filters, and reusable preset combinations.',
+      highlights: ['Search across transactions', 'Advanced filters', 'Saved filter presets']
+    },
+    {
+      id: 'import-export',
+      title: 'CSV import/export, backup, and restore',
+      description:
+        'Move and safeguard your data with CSV tools plus local backup and restore options.',
+      highlights: ['CSV import and export', 'Backup your records', 'Restore when needed']
+    },
+    {
+      id: 'receipts-ocr',
+      title: 'Receipt attachments with OCR assistance',
+      description:
+        'Attach receipts to transactions and use OCR-assisted capture to keep records complete.',
+      highlights: ['Receipt attachments', 'OCR-assisted entry', 'Better transaction context']
+    },
+    {
+      id: 'personalization',
+      title: 'Theme, language, and privacy options',
+      description:
+        'Customize how MoneyManager looks and behaves with theme, language, and privacy controls.',
+      highlights: ['Theme options', 'Language settings', 'Privacy preferences']
+    },
+    {
+      id: 'app-lock',
+      title: 'Optional PIN/biometric app lock',
+      description:
+        'Add an extra layer of protection with optional PIN or biometric lock.',
+      highlights: ['Optional PIN lock', 'Biometric unlock', 'Extra app security']
     }
   ],
   screenshots: [
@@ -167,6 +193,12 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
   ],
   faqs: [
     {
+      id: 'offline',
+      question: 'Does MoneyManager work offline?',
+      answer:
+        'Yes. MoneyManager is offline-first and keeps your finance data on your device by default.'
+    },
+    {
       id: 'sync',
       question: 'Does MoneyManager require an account?',
       answer:
@@ -177,12 +209,6 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       question: 'Where is my finance data stored?',
       answer:
         'Your finance entries are stored locally on your device. If cloud sync is introduced later, the privacy policy will be updated before launch.'
-    },
-    {
-      id: 'premium',
-      question: 'Are premium features available?',
-      answer:
-        'Yes. Some capabilities are marked as premium inside the app. The website highlights these features without publishing pricing claims.'
     },
     {
       id: 'support',
