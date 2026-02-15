@@ -1,9 +1,14 @@
 <template>
   <div class="min-h-screen bg-[#041310] text-[#e6f8f5]">
-    <MoneyManagerNav :play-store-url="content.playStoreUrl" :home-path="homePath" :support-path="supportPath" />
+    <MoneyManagerNav
+      :play-store-url="content.playStoreUrl"
+      :home-path="homePath"
+      :support-path="supportPath"
+      :section-base-path="homePath"
+    />
     <MoneyManagerHero :content="content" :support-path="supportPath" />
     <MoneyManagerFeatureGrid :features="content.features" :play-store-url="content.playStoreUrl" />
-    <MoneyManagerScreenshotGallery :screenshots="content.screenshots" />
+    <MoneyManagerScreenshotGallery :screenshots="content.screenshots" :hero-screenshot-id="content.heroScreenshotId" />
     <MoneyManagerTrustSection
       :trust-bullets="content.trustBullets"
       :privacy-path="privacyPath"

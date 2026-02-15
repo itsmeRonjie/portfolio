@@ -36,9 +36,10 @@ import type { MoneyManagerScreenshot } from '~/data/moneyManagerSite'
 
 const props = defineProps<{
   screenshots: MoneyManagerScreenshot[]
+  heroScreenshotId: string
 }>()
 
-const galleryShots = computed(() => props.screenshots.filter((shot) => shot.id !== 'hero-banner'))
+const galleryShots = computed(() => props.screenshots.filter((shot) => shot.id !== props.heroScreenshotId))
 </script>
 
 <style scoped>

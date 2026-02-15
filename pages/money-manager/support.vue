@@ -1,6 +1,11 @@
 <template>
   <div class="min-h-screen bg-[#041310] text-[#e6f8f5]">
-    <MoneyManagerNav :play-store-url="content.playStoreUrl" home-path="/money-manager" support-path="/money-manager/support" />
+    <MoneyManagerNav
+      :play-store-url="content.playStoreUrl"
+      home-path="/money-manager"
+      support-path="/money-manager/support"
+      section-base-path="/money-manager"
+    />
     <MoneyManagerSupportContent :content="content" privacy-path="/money-manager/privacy-policy" />
   </div>
 </template>

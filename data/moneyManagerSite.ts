@@ -24,6 +24,7 @@ export type MoneyManagerSiteContent = {
   appName: string
   shortName: string
   pageTitle: string
+  heroScreenshotId: string
   heroTitle: string
   heroSubtitle: string
   heroDescription: string
@@ -43,6 +44,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
   appName: 'MoneyManager',
   shortName: 'Money Manager',
   pageTitle: 'MoneyManager | Smart Wealth Tracking',
+  heroScreenshotId: 'home',
   heroTitle: 'MoneyManager',
   heroSubtitle: 'Smart wealth tracking for daily spending, budgets, bills, and goals.',
   heroDescription:
@@ -106,13 +108,6 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
     }
   ],
   screenshots: [
-    {
-      id: 'hero-banner',
-      title: 'Landing graphic',
-      src: '/apps/money-manager/hero-banner.png',
-      alt: 'MoneyManager hero banner with app UI preview',
-      note: 'Smart wealth tracking visual for the app.'
-    },
     {
       id: 'home',
       title: 'Home dashboard',

@@ -1,6 +1,6 @@
 <template>
   <div v-if="isMoneyManagerHost" class="min-h-screen bg-[#041310] text-[#e6f8f5]">
-    <MoneyManagerNav :play-store-url="content.playStoreUrl" home-path="/" support-path="/support" />
+    <MoneyManagerNav :play-store-url="content.playStoreUrl" home-path="/" support-path="/support" section-base-path="/" />
     <MoneyManagerSupportContent :content="content" privacy-path="/privacy-policy" />
   </div>
   <div v-else>

@@ -42,9 +42,17 @@ const canonicalUrl = computed(() => {
   return `${siteUrl.value}${route.path}`
 })
 
+const moneyManagerHeroScreenshotPath = computed(() => {
+  const heroScreenshot =
+    moneyManagerSite.screenshots.find((shot) => shot.id === moneyManagerSite.heroScreenshotId) ??
+    moneyManagerSite.screenshots[0]
+
+  return heroScreenshot?.src ?? '/og-image.svg'
+})
+
 const ogImage = computed(() => {
   if (isMoneyManagerRoute.value) {
-    return `${moneyManagerBaseUrl}/apps/money-manager/hero-banner.png`
+    return `${moneyManagerBaseUrl}${moneyManagerHeroScreenshotPath.value}`
   }
 
   if (isAlarmClockPrivacyRoute.value) {

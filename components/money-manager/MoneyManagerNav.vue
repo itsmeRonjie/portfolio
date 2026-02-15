@@ -15,9 +15,9 @@
       </NuxtLink>
 
       <nav class="hidden items-center gap-5 lg:flex">
-        <a class="mm-nav-link" href="#features">Features</a>
-        <a class="mm-nav-link" href="#screenshots">Screenshots</a>
-        <a class="mm-nav-link" href="#privacy">Trust</a>
+        <a class="mm-nav-link" :href="`${sectionBasePath}#features`">Features</a>
+        <a class="mm-nav-link" :href="`${sectionBasePath}#screenshots`">Screenshots</a>
+        <a class="mm-nav-link" :href="`${sectionBasePath}#privacy`">Trust</a>
       </nav>
 
       <div class="flex items-center gap-2.5">
@@ -41,11 +41,17 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+withDefaults(
+  defineProps<{
   playStoreUrl: string
   homePath: string
   supportPath: string
-}>()
+  sectionBasePath?: string
+}>(),
+  {
+    sectionBasePath: ''
+  }
+)
 </script>
 
 <style scoped>
