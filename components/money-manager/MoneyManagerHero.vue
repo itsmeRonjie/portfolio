@@ -69,12 +69,6 @@
 
               <div class="relative rounded-[2.45rem] border border-white/8 bg-[#050c0b] p-[7px]">
                 <div class="relative aspect-[430/932] overflow-hidden rounded-[2.08rem] border border-white/8 bg-[#081815]">
-                  <div
-                    class="absolute left-1/2 top-2 z-10 h-8 w-[126px] -translate-x-1/2 rounded-full border border-white/10 bg-black/80"
-                    aria-hidden="true"
-                  />
-                  <div class="absolute left-1/2 top-[18px] z-10 h-2 w-2 -translate-x-1/2 rounded-full bg-slate-500/70" aria-hidden="true" />
-
                   <img
                     v-if="previewShot"
                     :key="`preview-${previewShot.id}`"
@@ -92,9 +86,6 @@
                     Replace hero screenshot
                   </div>
 
-                  <div class="absolute inset-x-0 bottom-3 flex justify-center" aria-hidden="true">
-                    <div class="h-1.5 w-28 rounded-full bg-white/25" />
-                  </div>
                 </div>
               </div>
             </div>
