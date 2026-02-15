@@ -135,11 +135,25 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
   ],
   screenshots: [
     {
+      id: 'home-latest',
+      title: 'Home dashboard (latest)',
+      src: '/apps/money-manager/screen-home-latest.png',
+      alt: 'MoneyManager latest home dashboard with total balance, accounts, and budget status',
+      note: 'Latest home overview with balances, account cards, and monthly spending progress.'
+    },
+    {
       id: 'home',
       title: 'Home dashboard',
       src: '/apps/money-manager/screen-home.png',
       alt: 'MoneyManager home dashboard with total balance and account cards',
       note: 'Balance summary, account cards, and budget status.'
+    },
+    {
+      id: 'goals',
+      title: 'Savings goals',
+      src: '/apps/money-manager/screen-savings-goals.png',
+      alt: 'MoneyManager savings goals list with target and saved progress',
+      note: 'Goal progress with target deadlines.'
     },
     {
       id: 'transactions',
@@ -175,13 +189,6 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       src: '/apps/money-manager/screen-reports-trend.png',
       alt: 'MoneyManager reports trend screen with top merchants donut chart',
       note: 'Spending trends and top merchant distribution.'
-    },
-    {
-      id: 'goals',
-      title: 'Savings goals',
-      src: '/apps/money-manager/screen-savings-goals.png',
-      alt: 'MoneyManager savings goals list with target and saved progress',
-      note: 'Goal progress with target deadlines.'
     },
     {
       id: 'settings',

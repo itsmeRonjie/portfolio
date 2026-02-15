@@ -11,8 +11,8 @@
       aria-hidden="true"
     />
 
-    <div class="relative mx-auto grid max-w-6xl gap-10 px-6 pb-14 pt-12 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
-      <div class="animate-mm-rise space-y-6 will-change-transform" :style="copyColumnStyle">
+    <div class="relative mx-auto grid max-w-6xl gap-10 px-6 pb-14 pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <div class="animate-mm-rise space-y-6 will-change-transform lg:self-start" :style="copyColumnStyle">
         <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[#76afa7]">Smart Wealth Tracking</p>
         <h1 class="text-4xl font-semibold leading-tight text-[#e7fbf7] sm:text-5xl lg:text-6xl">{{ content.heroTitle }}</h1>
         <p class="max-w-2xl text-lg leading-relaxed text-[#b7d7d2] sm:text-xl">{{ content.heroSubtitle }}</p>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="animate-mm-rise [animation-delay:120ms] will-change-transform [perspective:1200px]" :style="panelColumnStyle">
+      <div class="animate-mm-rise [animation-delay:120ms] will-change-transform [perspective:1200px] lg:w-full lg:max-w-[540px] lg:justify-self-end" :style="panelColumnStyle">
         <div class="rounded-[2rem] border border-[#2b625b]/70 bg-[#08211d]/75 p-5 shadow-[0_28px_70px_rgba(0,0,0,0.45)] sm:p-6 [transform-style:preserve-3d]" :style="panelStyle">
           <div class="mb-5 flex items-start justify-between gap-3">
             <div>
@@ -58,7 +58,7 @@
             </span>
           </div>
 
-          <div class="relative mx-auto w-full max-w-[360px] will-change-transform" :style="phoneStyle">
+          <div class="relative mx-auto w-full max-w-[340px] will-change-transform" :style="phoneStyle">
             <div class="pointer-events-none absolute -left-5 top-16 h-24 w-24 rounded-full bg-[#25cdb3]/12 blur-3xl" aria-hidden="true" :style="leftGlowStyle" />
             <div class="pointer-events-none absolute -right-4 bottom-16 h-28 w-28 rounded-full bg-[#2c8f82]/10 blur-3xl" aria-hidden="true" :style="rightGlowStyle" />
 
