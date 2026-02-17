@@ -62,6 +62,11 @@ const normalizeDeveloperId = (value: string) => {
   }
 }
 
+const normalizePlayStorePublisherId = (value: string) => value.replace(/'/g, '’')
+
+const encodeDeveloperIdForPlayStore = (value: string) =>
+  encodeURIComponent(normalizePlayStorePublisherId(value)).replace(/%20/g, '+')
+
 const isTruthyQuery = (value: unknown) => {
   if (Array.isArray(value)) {
     return value.some(isTruthyQuery)
@@ -191,7 +196,7 @@ export default defineCachedEventHandler(
     }
 
     const limit = parseLimit(query.limit ?? playStore.limit, playStore.limit || DEFAULT_LIMIT)
-    const developerUrl = `${PLAY_STORE_BASE}/developer?id=${encodeURIComponent(developerId)}&hl=en&gl=US`
+    const developerUrl = `${PLAY_STORE_BASE}/developer?id=${encodeDeveloperIdForPlayStore(developerId)}&hl=en&gl=US`
 
     const developerResponse = await $fetch.raw<string>(developerUrl, {
       responseType: 'text',

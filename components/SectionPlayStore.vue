@@ -95,11 +95,21 @@ const normalizeDeveloperId = (value: string) => {
   }
 }
 
+const normalizePlayStorePublisherId = (value: string) => value.replace(/'/g, '’')
+
+const encodeDeveloperIdForProfileUrl = (value: string) => {
+  const normalized = normalizePlayStorePublisherId(normalizeDeveloperId(value))
+  if (!normalized) {
+    return ''
+  }
+  return encodeURIComponent(normalized).replace(/%20/g, '+')
+}
+
 const playStoreDeveloperId = computed(() => normalizeDeveloperId(playStore.developerId))
 const hasPlayStoreDeveloper = computed(() => playStoreDeveloperId.value.length > 0)
 const playStoreDeveloperUrl = computed(() =>
   hasPlayStoreDeveloper.value
-    ? `https://play.google.com/store/apps/developer?id=${encodeURIComponent(playStoreDeveloperId.value)}`
+    ? `https://play.google.com/store/apps/developer?id=${encodeDeveloperIdForProfileUrl(playStoreDeveloperId.value)}`
     : ''
 )
 const {

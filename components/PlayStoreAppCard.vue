@@ -1,5 +1,5 @@
 <template>
-  <article class="ui-panel !rounded-2xl !p-5 transition hover:border-accent-2/45">
+  <article class="ui-panel !rounded-2xl !p-5 transition hover:border-accent-2/45 flex h-full flex-col">
     <div class="flex items-start gap-4">
       <div
         class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-surface-strong"
@@ -27,7 +27,7 @@
         </p>
       </div>
     </div>
-    <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-400">
+    <div class="mt-auto flex flex-wrap items-center gap-3 pt-4 text-xs text-slate-400">
       <span
         v-if="app.category"
         class="ui-chip font-mono !px-2.5 !py-1 !text-[10px]"
