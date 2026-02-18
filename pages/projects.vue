@@ -232,10 +232,8 @@ const normalizeDeveloperId = (value: string) => {
   }
 }
 
-const normalizePlayStorePublisherId = (value: string) => value.replace(/'/g, '’')
-
 const encodeDeveloperIdForProfileUrl = (value: string) => {
-  const normalized = normalizePlayStorePublisherId(normalizeDeveloperId(value))
+  const normalized = normalizeDeveloperId(value)
   if (!normalized) {
     return ''
   }

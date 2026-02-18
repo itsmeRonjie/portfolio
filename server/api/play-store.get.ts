@@ -62,10 +62,8 @@ const normalizeDeveloperId = (value: string) => {
   }
 }
 
-const normalizePlayStorePublisherId = (value: string) => value.replace(/'/g, '’')
-
 const encodeDeveloperIdForPlayStore = (value: string) =>
-  encodeURIComponent(normalizePlayStorePublisherId(value)).replace(/%20/g, '+')
+  encodeURIComponent(value).replace(/%20/g, '+')
 
 const isTruthyQuery = (value: unknown) => {
   if (Array.isArray(value)) {

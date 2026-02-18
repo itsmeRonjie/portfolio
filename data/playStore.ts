@@ -4,6 +4,6 @@ export type PlayStoreConfig = {
 }
 
 export const playStore: PlayStoreConfig = {
-  developerId: 'Ronj%E2%80%99s+Studios',
+  developerId: 'Ronj%27s+Studios',
   limit: 6
 }
