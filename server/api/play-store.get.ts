@@ -17,7 +17,7 @@ type PlayStoreApp = {
 
 const DEFAULT_LIMIT = 6
 const MAX_LIMIT = 24
-const CACHE_VERSION = 'v7'
+const CACHE_VERSION = 'v8'
 const PLAY_STORE_LANG = 'en'
 const PLAY_STORE_COUNTRY = 'us'
 

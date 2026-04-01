@@ -128,9 +128,9 @@
           </a>
         </div>
 
-        <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-8 flex flex-wrap items-start gap-4">
           <template v-if="!hasPlayStoreDeveloper">
-            <div class="ui-panel md:col-span-2 lg:col-span-3">
+            <div class="ui-panel w-full">
               <p class="text-sm text-slate-300">
                 Add your Play Store developer ID in <span class="font-semibold">data/playStore.ts</span> to enable
                 listings.
@@ -142,7 +142,7 @@
             <div
               v-for="skeleton in playStoreSkeletons"
               :key="skeleton"
-              class="ui-panel !rounded-2xl !p-5 animate-pulse"
+              class="ui-panel !rounded-2xl !p-5 w-full max-w-[32rem] animate-pulse"
             >
               <div class="flex items-start gap-4">
                 <div class="h-12 w-12 rounded-xl bg-white/10" />
@@ -160,7 +160,7 @@
           </template>
 
           <template v-else-if="playStoreError">
-            <div class="ui-panel md:col-span-2 lg:col-span-3">
+            <div class="ui-panel w-full">
               <p class="text-sm text-slate-300">
                 Unable to load Play Store listings right now. Try again in a moment.
               </p>
@@ -178,7 +178,7 @@
             <PlayStoreAppCard v-for="app in playStoreApps" :key="app.id" :app="app" />
             <div
               v-if="playStoreApps.length === 0"
-              class="ui-panel md:col-span-2 lg:col-span-3"
+              class="ui-panel w-full"
             >
               <p class="text-sm text-slate-300">No Play Store apps found for this developer.</p>
             </div>

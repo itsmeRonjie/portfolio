@@ -17,7 +17,7 @@ export const usePlayStoreApps = (
   developerId: string | Ref<string>,
   limit: number | Ref<number> = 6
 ) => {
-  const cacheVersion = 'v7'
+  const cacheVersion = 'v8'
   const developer = computed(() => unref(developerId).trim())
   const max = computed(() => {
     const value = Number(unref(limit))
