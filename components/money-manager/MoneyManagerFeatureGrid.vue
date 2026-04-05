@@ -3,7 +3,7 @@
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
         <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[#70a59e]">Feature Set</p>
-        <h2 class="mt-2 text-3xl font-semibold text-[#e6faf6]">Everything you need to run your monthly plan</h2>
+        <h2 class="mt-2 text-3xl font-semibold text-[#e6faf6]">Everything you need to track, plan, and review your money</h2>
       </div>
       <a
         class="inline-flex items-center rounded-full border border-[#2d6f66]/65 bg-[#0d2924]/75 px-4 py-2 text-xs font-semibold text-[#a8d2cb] transition hover:border-[#4bbcae]/70 hover:text-[#e5faf7]"

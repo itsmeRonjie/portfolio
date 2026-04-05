@@ -24,20 +24,20 @@ import SectionWork from '~/components/SectionWork.vue'
 import SectionToolbox from '~/components/SectionToolbox.vue'
 import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
 import MoneyManagerLanding from '~/components/money-manager/MoneyManagerLanding.vue'
-import { moneyManagerSite } from '~/data/moneyManagerSite'
 
 const profile = useProfile()
 const { isMoneyManagerHost } = useHostRouting()
+const { content: moneyManagerContent } = useMoneyManagerSiteContent()
 
 useSeoMeta(() => {
   if (isMoneyManagerHost.value) {
     return {
-      title: moneyManagerSite.pageTitle,
-      description: moneyManagerSite.heroDescription,
-      ogTitle: moneyManagerSite.pageTitle,
-      ogDescription: moneyManagerSite.heroDescription,
-      twitterTitle: moneyManagerSite.pageTitle,
-      twitterDescription: moneyManagerSite.heroDescription
+      title: moneyManagerContent.value.pageTitle,
+      description: moneyManagerContent.value.heroSubtitle,
+      ogTitle: moneyManagerContent.value.pageTitle,
+      ogDescription: moneyManagerContent.value.heroSubtitle,
+      twitterTitle: moneyManagerContent.value.pageTitle,
+      twitterDescription: moneyManagerContent.value.heroSubtitle
     }
   }
 

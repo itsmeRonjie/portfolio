@@ -54,7 +54,7 @@
               <h2 class="mt-2 text-xl font-semibold text-[#e3f9f5]">App preview</h2>
             </div>
             <span class="inline-flex rounded-full border border-[#30d8c0]/45 bg-[#30d8c0]/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8ff4e3]">
-              UI Live
+              Current Build
             </span>
           </div>
 

@@ -13,16 +13,15 @@
 <script setup lang="ts">
 import MoneyManagerNav from '~/components/money-manager/MoneyManagerNav.vue'
 import MoneyManagerSupportContent from '~/components/money-manager/MoneyManagerSupportContent.vue'
-import { moneyManagerSite } from '~/data/moneyManagerSite'
 
-const content = moneyManagerSite
+const { content } = useMoneyManagerSiteContent()
 
-useSeoMeta({
-  title: `Support | ${content.appName}`,
-  description: `Support and FAQ for ${content.shortName}.`,
-  ogTitle: `Support | ${content.appName}`,
-  ogDescription: `Support and FAQ for ${content.shortName}.`,
-  twitterTitle: `Support | ${content.appName}`,
-  twitterDescription: `Support and FAQ for ${content.shortName}.`
-})
+useSeoMeta(() => ({
+  title: `Support | ${content.value.appName}`,
+  description: `Support and FAQ for ${content.value.appName}.`,
+  ogTitle: `Support | ${content.value.appName}`,
+  ogDescription: `Support and FAQ for ${content.value.appName}.`,
+  twitterTitle: `Support | ${content.value.appName}`,
+  twitterDescription: `Support and FAQ for ${content.value.appName}.`
+}))
 </script>

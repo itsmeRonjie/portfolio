@@ -10,7 +10,7 @@
     <main class="mx-auto max-w-5xl px-6 pb-16 pt-12">
       <header class="rounded-3xl border border-[#2a5f59]/70 bg-[#0b2b25]/85 p-6 sm:p-8">
         <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[#76afa7]">Legal</p>
-        <h1 class="mt-2 text-3xl font-semibold text-[#e8fcf8] sm:text-4xl">Money Manager Privacy Policy</h1>
+        <h1 class="mt-2 text-3xl font-semibold text-[#e8fcf8] sm:text-4xl">{{ content.appName }} Privacy Policy</h1>
         <p class="mt-2 text-sm text-[#9ec4be]">Last updated: 2026-02-12</p>
         <div class="mt-5 flex flex-wrap gap-3">
           <NuxtLink
@@ -128,16 +128,15 @@
 
 <script setup lang="ts">
 import MoneyManagerNav from '~/components/money-manager/MoneyManagerNav.vue'
-import { moneyManagerSite } from '~/data/moneyManagerSite'
 
-const content = moneyManagerSite
+const { content } = useMoneyManagerSiteContent()
 const { isMoneyManagerFallbackPath } = useHostRouting()
 
 const homePath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager' : '/'))
 const supportPath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager/support' : '/support'))
 
-useSeoMeta({
-  title: 'Money Manager Privacy Policy',
-  description: 'Privacy policy for the Money Manager mobile app.'
-})
+useSeoMeta(() => ({
+  title: `${content.value.appName} Privacy Policy`,
+  description: `Privacy policy for ${content.value.appName}.`
+}))
 </script>

@@ -5,11 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { moneyManagerSite } from '~/data/moneyManagerSite'
-
 const profile = useProfile()
 const route = useRoute()
 const config = useRuntimeConfig()
+const { content: moneyManagerContent } = useMoneyManagerSiteContent()
 
 const {
   isMoneyManagerRoute,
@@ -23,11 +22,11 @@ const {
 const siteUrl = computed(() => config.public.siteUrl.replace(/\/$/, ''))
 
 const defaultTitle = computed(() =>
-  isMoneyManagerRoute.value ? moneyManagerSite.pageTitle : `${profile.name} | ${profile.title}`
+  isMoneyManagerRoute.value ? moneyManagerContent.value.pageTitle : `${profile.name} | ${profile.title}`
 )
 
 const defaultDescription = computed(() =>
-  isMoneyManagerRoute.value ? moneyManagerSite.heroDescription : profile.summary
+  isMoneyManagerRoute.value ? moneyManagerContent.value.heroSubtitle : profile.summary
 )
 
 const canonicalUrl = computed(() => {
@@ -44,8 +43,8 @@ const canonicalUrl = computed(() => {
 
 const moneyManagerHeroScreenshotPath = computed(() => {
   const heroScreenshot =
-    moneyManagerSite.screenshots.find((shot) => shot.id === moneyManagerSite.heroScreenshotId) ??
-    moneyManagerSite.screenshots[0]
+    moneyManagerContent.value.screenshots.find((shot) => shot.id === moneyManagerContent.value.heroScreenshotId) ??
+    moneyManagerContent.value.screenshots[0]
 
   return heroScreenshot?.src ?? '/og-image.svg'
 })
@@ -88,12 +87,12 @@ const moneyManagerSchema = computed(() => {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: moneyManagerSite.appName,
+    name: moneyManagerContent.value.appName,
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Android',
-    description: moneyManagerSite.longDescription,
+    description: moneyManagerContent.value.longDescription,
     url: canonicalUrl.value,
-    downloadUrl: moneyManagerSite.playStoreUrl,
+    downloadUrl: moneyManagerContent.value.playStoreUrl,
     offers: {
       '@type': 'Offer',
       price: '0',

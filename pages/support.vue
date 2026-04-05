@@ -26,23 +26,22 @@
 import SiteNav from '~/components/SiteNav.vue'
 import MoneyManagerNav from '~/components/money-manager/MoneyManagerNav.vue'
 import MoneyManagerSupportContent from '~/components/money-manager/MoneyManagerSupportContent.vue'
-import { moneyManagerSite } from '~/data/moneyManagerSite'
 
-const content = moneyManagerSite
+const { content } = useMoneyManagerSiteContent()
 const { isMoneyManagerHost } = useHostRouting()
 
 useSeoMeta(() => {
   if (isMoneyManagerHost.value) {
     return {
-      title: `Support | ${content.appName}`,
-      description: `Support and FAQ for ${content.shortName}.`,
+      title: `Support | ${content.value.appName}`,
+      description: `Support and FAQ for ${content.value.appName}.`,
       robots: 'index,follow'
     }
   }
 
   return {
     title: 'MoneyManager Support',
-    description: `Support details for ${content.shortName}.`,
+    description: `Support details for ${content.value.appName}.`,
     robots: 'noindex,follow'
   }
 })

@@ -2,9 +2,9 @@
   <section class="mx-auto max-w-6xl px-6 py-14" id="screenshots">
     <div class="space-y-3">
       <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[#70a59e]">Product Preview</p>
-      <h2 class="text-3xl font-semibold text-[#e6faf6]">Screens that keep your numbers clear</h2>
+      <h2 class="text-3xl font-semibold text-[#e6faf6]">Current screens from the latest MoneyManager build</h2>
       <p class="max-w-3xl text-sm text-[#99beb8]">
-        Built around a readable dark theme with high-contrast cards, trend charts, and focused finance actions.
+        Home, transactions, planning, reports, automation, and theme customization from the current Android app.
       </p>
     </div>
 
@@ -39,7 +39,7 @@ const props = defineProps<{
   heroScreenshotId: string
 }>()
 
-const galleryShots = computed(() => props.screenshots.filter((shot) => shot.id !== props.heroScreenshotId))
+const galleryShots = computed(() => props.screenshots)
 </script>
 
 <style scoped>

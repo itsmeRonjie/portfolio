@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { moneyManagerSite } from '~/data/moneyManagerSite'
 import MoneyManagerNav from '~/components/money-manager/MoneyManagerNav.vue'
 import MoneyManagerHero from '~/components/money-manager/MoneyManagerHero.vue'
 import MoneyManagerFeatureGrid from '~/components/money-manager/MoneyManagerFeatureGrid.vue'
@@ -28,7 +27,7 @@ import MoneyManagerScreenshotGallery from '~/components/money-manager/MoneyManag
 import MoneyManagerTrustSection from '~/components/money-manager/MoneyManagerTrustSection.vue'
 import MoneyManagerFinalCta from '~/components/money-manager/MoneyManagerFinalCta.vue'
 
-const content = moneyManagerSite
+const { content } = useMoneyManagerSiteContent()
 const { isMoneyManagerFallbackPath } = useHostRouting()
 
 const homePath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager' : '/'))

@@ -4,14 +4,14 @@
 
 <script setup lang="ts">
 import MoneyManagerLanding from '~/components/money-manager/MoneyManagerLanding.vue'
-import { moneyManagerSite } from '~/data/moneyManagerSite'
+const { content } = useMoneyManagerSiteContent()
 
-useSeoMeta({
-  title: moneyManagerSite.pageTitle,
-  description: moneyManagerSite.heroDescription,
-  ogTitle: moneyManagerSite.pageTitle,
-  ogDescription: moneyManagerSite.heroDescription,
-  twitterTitle: moneyManagerSite.pageTitle,
-  twitterDescription: moneyManagerSite.heroDescription
-})
+useSeoMeta(() => ({
+  title: content.value.pageTitle,
+  description: content.value.heroSubtitle,
+  ogTitle: content.value.pageTitle,
+  ogDescription: content.value.heroSubtitle,
+  twitterTitle: content.value.pageTitle,
+  twitterDescription: content.value.heroSubtitle
+}))
 </script>
