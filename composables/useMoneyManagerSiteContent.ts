@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 import { moneyManagerSite } from '~/data/moneyManagerSite'
 import type { MoneyManagerSiteContent } from '~/data/moneyManagerSite'
 
@@ -34,12 +34,16 @@ const toHeroDescription = (value: string) => {
   return truncateAtWord(paragraphs.slice(0, 2).join(' '), 320)
 }
 
-export const useMoneyManagerSiteContent = () => {
+export const useMoneyManagerSiteContent = (enabled: MaybeRefOrGetter<boolean> = true) => {
+  const shouldFetch = computed(() => toValue(enabled))
+
   const { data, pending, error, refresh } = useFetch<PlayStoreAppDetail>('/api/play-store-app', {
     key: 'money-manager-play-store-content-v1',
     query: {
       appId: moneyManagerSite.playStoreAppId
     },
+    immediate: shouldFetch.value,
+    server: shouldFetch.value,
     default: () => null
   })
 

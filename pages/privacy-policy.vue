@@ -6,7 +6,9 @@
       Open this page from one of the app subdomains:
       <a class="ui-link" href="https://alarmclock.ronjiemanon.com/privacy-policy">alarmclock.ronjiemanon.com</a>
       or
-      <a class="ui-link" href="https://moneymanager.ronjiemanon.com/privacy-policy">moneymanager.ronjiemanon.com</a>.
+      <a class="ui-link" href="https://moneymanager.ronjiemanon.com/privacy-policy">moneymanager.ronjiemanon.com</a>
+      or
+      <a class="ui-link" href="https://dinkboard.ronjiemanon.com/privacy-policy">dinkboard.ronjiemanon.com</a>.
     </p>
   </main>
 </template>
@@ -14,6 +16,7 @@
 <script setup lang="ts">
 import AlarmClockPrivacyPolicyPage from '~/pages/alarm-clock/privacy-policy.vue'
 import MoneyManagerPrivacyPolicyPage from '~/pages/money-manager/privacy-policy.vue'
+import DinkBoardPrivacyPolicyPage from '~/pages/dinkboard/privacy-policy.vue'
 
 const route = useRoute()
 const requestUrl = useRequestURL()
@@ -41,6 +44,10 @@ const policyComponent = computed(() => {
 
   if (host.value === 'moneymanager.ronjiemanon.com') {
     return MoneyManagerPrivacyPolicyPage
+  }
+
+  if (host.value === 'dinkboard.ronjiemanon.com') {
+    return DinkBoardPrivacyPolicyPage
   }
 
   return null

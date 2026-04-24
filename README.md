@@ -38,8 +38,15 @@ Required GitHub secrets:
 - Edit `data/profile.ts` for summary, experience, education, strengths, languages, and links.
 - Edit `data/projects.ts` for project cards (placeholders are marked).
 - Edit `data/playStore.ts` for Play Store developer listings (developer ID + limit).
+- Edit `data/moneyManagerSite.ts` for Money Manager app-site content.
+- Edit `data/dinkBoardSite.ts` for DinkBoard app-site content, support details, and store links.
 - Edit `data/skills.ts` for core technology badges.
 - Edit `data/toolbox.ts` for tools list.
+
+## App Subdomains
+- `moneymanager.ronjiemanon.com` renders the Money Manager landing, support, and privacy pages. Fallback routes live under `/money-manager`.
+- `dinkboard.ronjiemanon.com` renders the DinkBoard landing, support, and privacy pages. Fallback routes live under `/dinkboard`.
+- `alarmclock.ronjiemanon.com/privacy-policy` renders the Alarm Clock privacy policy.
 
 ## Resume
 The download button points to `public/resume.pdf`. Replace it to update the resume.

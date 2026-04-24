@@ -3,7 +3,7 @@
     <div class="grid gap-6 md:grid-cols-[360px_1fr]">
       <div
         class="relative flex items-center justify-center overflow-hidden rounded-2xl border border-border/70 bg-gradient-to-br p-4"
-        :class="resolveProjectAccent(project.tags)"
+        :class="project.accent || resolveProjectAccent(project.tags)"
       >
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.15),transparent_58%)]" />
         <ClientOnly v-if="project.githubOrg">
@@ -12,6 +12,18 @@
             <div class="relative aspect-[2/1] w-full rounded-2xl border border-white/10 bg-black/30 shadow-inner" />
           </template>
         </ClientOnly>
+        <div
+          v-else-if="project.previewImage"
+          class="relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 p-4 shadow-inner"
+        >
+          <img
+            class="h-full w-full object-contain"
+            :src="project.previewImage"
+            :alt="project.previewAlt ?? project.title"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
         <div
           v-else
           class="relative aspect-[2/1] w-full rounded-2xl border border-white/10 bg-black/30 shadow-inner"

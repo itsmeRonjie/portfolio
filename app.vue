@@ -8,30 +8,92 @@
 const profile = useProfile()
 const route = useRoute()
 const config = useRuntimeConfig()
-const { content: moneyManagerContent } = useMoneyManagerSiteContent()
 
 const {
   isMoneyManagerRoute,
+  isMoneyManagerPrivacyRoute,
+  isMoneyManagerSupportRoute,
   isMoneyManagerFallbackPath,
+  isDinkBoardRoute,
+  isDinkBoardPrivacyRoute,
+  isDinkBoardSupportRoute,
+  isDinkBoardFallbackPath,
   isAlarmClockPrivacyRoute,
   moneyManagerCanonicalUrl,
+  dinkBoardCanonicalUrl,
   alarmClockCanonicalUrl,
-  moneyManagerBaseUrl
+  moneyManagerBaseUrl,
+  dinkBoardBaseUrl
 } = useHostRouting()
+
+const { content: moneyManagerContent } = useMoneyManagerSiteContent(isMoneyManagerRoute)
+const { content: dinkBoardContent } = useDinkBoardSiteContent()
 
 const siteUrl = computed(() => config.public.siteUrl.replace(/\/$/, ''))
 
-const defaultTitle = computed(() =>
-  isMoneyManagerRoute.value ? moneyManagerContent.value.pageTitle : `${profile.name} | ${profile.title}`
-)
+const defaultTitle = computed(() => {
+  if (isMoneyManagerPrivacyRoute.value) {
+    return `${moneyManagerContent.value.appName} Privacy Policy`
+  }
 
-const defaultDescription = computed(() =>
-  isMoneyManagerRoute.value ? moneyManagerContent.value.heroSubtitle : profile.summary
-)
+  if (isMoneyManagerSupportRoute.value) {
+    return `Support | ${moneyManagerContent.value.appName}`
+  }
+
+  if (isMoneyManagerRoute.value) {
+    return moneyManagerContent.value.pageTitle
+  }
+
+  if (isDinkBoardPrivacyRoute.value) {
+    return `${dinkBoardContent.value.appName} Privacy Policy`
+  }
+
+  if (isDinkBoardSupportRoute.value) {
+    return `Support | ${dinkBoardContent.value.appName}`
+  }
+
+  if (isDinkBoardRoute.value) {
+    return dinkBoardContent.value.pageTitle
+  }
+
+  return `${profile.name} | ${profile.title}`
+})
+
+const defaultDescription = computed(() => {
+  if (isMoneyManagerPrivacyRoute.value) {
+    return `Privacy policy for ${moneyManagerContent.value.appName}.`
+  }
+
+  if (isMoneyManagerSupportRoute.value) {
+    return `Support and FAQ for ${moneyManagerContent.value.appName}.`
+  }
+
+  if (isMoneyManagerRoute.value) {
+    return moneyManagerContent.value.heroSubtitle
+  }
+
+  if (isDinkBoardPrivacyRoute.value) {
+    return `Privacy policy for ${dinkBoardContent.value.appName}.`
+  }
+
+  if (isDinkBoardSupportRoute.value) {
+    return `Support and FAQ for ${dinkBoardContent.value.appName}.`
+  }
+
+  if (isDinkBoardRoute.value) {
+    return dinkBoardContent.value.heroSubtitle
+  }
+
+  return profile.summary
+})
 
 const canonicalUrl = computed(() => {
   if (isMoneyManagerRoute.value && moneyManagerCanonicalUrl.value) {
     return moneyManagerCanonicalUrl.value
+  }
+
+  if (isDinkBoardRoute.value && dinkBoardCanonicalUrl.value) {
+    return dinkBoardCanonicalUrl.value
   }
 
   if (isAlarmClockPrivacyRoute.value && alarmClockCanonicalUrl.value) {
@@ -54,6 +116,10 @@ const ogImage = computed(() => {
     return `${moneyManagerBaseUrl}${moneyManagerHeroScreenshotPath.value}`
   }
 
+  if (isDinkBoardRoute.value) {
+    return `${dinkBoardBaseUrl}${dinkBoardContent.value.appIconPath}`
+  }
+
   if (isAlarmClockPrivacyRoute.value) {
     return 'https://alarmclock.ronjiemanon.com/og-image.svg'
   }
@@ -61,7 +127,9 @@ const ogImage = computed(() => {
   return `${siteUrl.value}/og-image.svg`
 })
 
-const robots = computed(() => (isMoneyManagerFallbackPath.value ? 'noindex,follow' : 'index,follow'))
+const robots = computed(() =>
+  isMoneyManagerFallbackPath.value || isDinkBoardFallbackPath.value ? 'noindex,follow' : 'index,follow'
+)
 
 const personSchema = computed(() => ({
   '@context': 'https://schema.org',
@@ -101,6 +169,28 @@ const moneyManagerSchema = computed(() => {
   }
 })
 
+const dinkBoardSchema = computed(() => {
+  if (!isDinkBoardRoute.value) {
+    return null
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: dinkBoardContent.value.appName,
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'Android, iOS, watchOS',
+    description: dinkBoardContent.value.longDescription,
+    url: canonicalUrl.value,
+    downloadUrl: dinkBoardContent.value.playStoreUrl,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD'
+    }
+  }
+})
+
 useHead(() => {
   const scripts = [
     {
@@ -123,26 +213,33 @@ useHead(() => {
     })
   }
 
+  if (dinkBoardSchema.value) {
+    scripts.push({
+      id: 'ld-dinkboard',
+      type: 'application/ld+json',
+      children: JSON.stringify(dinkBoardSchema.value)
+    })
+  }
+
   return {
+    title: defaultTitle.value,
     titleTemplate: (titleChunk) => titleChunk || profile.name,
     htmlAttrs: { lang: 'en' },
     link: [{ rel: 'canonical', href: canonicalUrl.value }],
+    meta: [
+      { name: 'description', content: defaultDescription.value },
+      { property: 'og:title', content: defaultTitle.value },
+      { property: 'og:description', content: defaultDescription.value },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: canonicalUrl.value },
+      { property: 'og:image', content: ogImage.value },
+      { name: 'twitter:title', content: defaultTitle.value },
+      { name: 'twitter:description', content: defaultDescription.value },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: ogImage.value },
+      { name: 'robots', content: robots.value }
+    ],
     script: scripts
   }
 })
-
-useSeoMeta(() => ({
-  title: defaultTitle.value,
-  description: defaultDescription.value,
-  ogTitle: defaultTitle.value,
-  ogDescription: defaultDescription.value,
-  ogType: 'website',
-  ogUrl: canonicalUrl.value,
-  ogImage: ogImage.value,
-  twitterTitle: defaultTitle.value,
-  twitterDescription: defaultDescription.value,
-  twitterCard: 'summary_large_image',
-  twitterImage: ogImage.value,
-  robots: robots.value
-}))
 </script>

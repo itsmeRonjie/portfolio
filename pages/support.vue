@@ -3,6 +3,16 @@
     <MoneyManagerNav :play-store-url="content.playStoreUrl" home-path="/" support-path="/support" section-base-path="/" />
     <MoneyManagerSupportContent :content="content" privacy-path="/privacy-policy" />
   </div>
+  <div v-else-if="isDinkBoardHost" class="min-h-screen bg-[#07100a] text-[#eefbdf]">
+    <DinkBoardNav
+      :play-store-url="dinkBoardContent.playStoreUrl"
+      :app-icon-path="dinkBoardContent.appIconPath"
+      home-path="/"
+      support-path="/support"
+      section-base-path="/"
+    />
+    <DinkBoardSupportContent :content="dinkBoardContent" privacy-path="/privacy-policy" />
+  </div>
   <div v-else>
     <SiteNav />
     <main class="mx-auto max-w-3xl px-6 py-16 text-slate-300">
@@ -26,15 +36,26 @@
 import SiteNav from '~/components/SiteNav.vue'
 import MoneyManagerNav from '~/components/money-manager/MoneyManagerNav.vue'
 import MoneyManagerSupportContent from '~/components/money-manager/MoneyManagerSupportContent.vue'
+import DinkBoardNav from '~/components/dinkboard/DinkBoardNav.vue'
+import DinkBoardSupportContent from '~/components/dinkboard/DinkBoardSupportContent.vue'
 
-const { content } = useMoneyManagerSiteContent()
-const { isMoneyManagerHost } = useHostRouting()
+const { isMoneyManagerHost, isDinkBoardHost } = useHostRouting()
+const { content } = useMoneyManagerSiteContent(isMoneyManagerHost)
+const { content: dinkBoardContent } = useDinkBoardSiteContent()
 
 useSeoMeta(() => {
   if (isMoneyManagerHost.value) {
     return {
       title: `Support | ${content.value.appName}`,
       description: `Support and FAQ for ${content.value.appName}.`,
+      robots: 'index,follow'
+    }
+  }
+
+  if (isDinkBoardHost.value) {
+    return {
+      title: `Support | ${dinkBoardContent.value.appName}`,
+      description: `Support and FAQ for ${dinkBoardContent.value.appName}.`,
       robots: 'index,follow'
     }
   }

@@ -2,6 +2,9 @@
   <div v-if="isMoneyManagerHost">
     <MoneyManagerLanding />
   </div>
+  <div v-else-if="isDinkBoardHost">
+    <DinkBoardLanding />
+  </div>
   <div v-else>
     <SiteNav />
     <main>
@@ -24,10 +27,12 @@ import SectionWork from '~/components/SectionWork.vue'
 import SectionToolbox from '~/components/SectionToolbox.vue'
 import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
 import MoneyManagerLanding from '~/components/money-manager/MoneyManagerLanding.vue'
+import DinkBoardLanding from '~/components/dinkboard/DinkBoardLanding.vue'
 
 const profile = useProfile()
-const { isMoneyManagerHost } = useHostRouting()
-const { content: moneyManagerContent } = useMoneyManagerSiteContent()
+const { isMoneyManagerHost, isDinkBoardHost } = useHostRouting()
+const { content: moneyManagerContent } = useMoneyManagerSiteContent(isMoneyManagerHost)
+const { content: dinkBoardContent } = useDinkBoardSiteContent()
 
 useSeoMeta(() => {
   if (isMoneyManagerHost.value) {
@@ -38,6 +43,17 @@ useSeoMeta(() => {
       ogDescription: moneyManagerContent.value.heroSubtitle,
       twitterTitle: moneyManagerContent.value.pageTitle,
       twitterDescription: moneyManagerContent.value.heroSubtitle
+    }
+  }
+
+  if (isDinkBoardHost.value) {
+    return {
+      title: dinkBoardContent.value.pageTitle,
+      description: dinkBoardContent.value.heroSubtitle,
+      ogTitle: dinkBoardContent.value.pageTitle,
+      ogDescription: dinkBoardContent.value.heroSubtitle,
+      twitterTitle: dinkBoardContent.value.pageTitle,
+      twitterDescription: dinkBoardContent.value.heroSubtitle
     }
   }
 
