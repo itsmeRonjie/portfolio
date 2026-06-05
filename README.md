@@ -47,6 +47,7 @@ Required GitHub secrets:
 - `moneymanager.ronjiemanon.com` renders the Money Manager landing, support, and privacy pages. Fallback routes live under `/money-manager`.
 - `dinkboard.ronjiemanon.com` renders the DinkBoard landing, support, and privacy pages. Fallback routes live under `/dinkboard`.
 - `alarmclock.ronjiemanon.com/privacy-policy` renders the Alarm Clock privacy policy.
+- `picklequeue.ronjiemanon.com/privacy-policy` renders the Pickle Queue privacy policy. Fallback route lives under `/pickle-queue/privacy-policy`.
 
 ## Resume
 The download button points to `public/resume.pdf`. Replace it to update the resume.

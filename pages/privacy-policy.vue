@@ -8,7 +8,9 @@
       or
       <a class="ui-link" href="https://moneymanager.ronjiemanon.com/privacy-policy">moneymanager.ronjiemanon.com</a>
       or
-      <a class="ui-link" href="https://dinkboard.ronjiemanon.com/privacy-policy">dinkboard.ronjiemanon.com</a>.
+      <a class="ui-link" href="https://dinkboard.ronjiemanon.com/privacy-policy">dinkboard.ronjiemanon.com</a>
+      or
+      <a class="ui-link" href="https://picklequeue.ronjiemanon.com/privacy-policy">picklequeue.ronjiemanon.com</a>.
     </p>
   </main>
 </template>
@@ -17,6 +19,7 @@
 import AlarmClockPrivacyPolicyPage from '~/pages/alarm-clock/privacy-policy.vue'
 import MoneyManagerPrivacyPolicyPage from '~/pages/money-manager/privacy-policy.vue'
 import DinkBoardPrivacyPolicyPage from '~/pages/dinkboard/privacy-policy.vue'
+import PickleQueuePrivacyPolicyPage from '~/pages/pickle-queue/privacy-policy.vue'
 
 const route = useRoute()
 const requestUrl = useRequestURL()
@@ -48,6 +51,10 @@ const policyComponent = computed(() => {
 
   if (host.value === 'dinkboard.ronjiemanon.com') {
     return DinkBoardPrivacyPolicyPage
+  }
+
+  if (host.value === 'picklequeue.ronjiemanon.com') {
+    return PickleQueuePrivacyPolicyPage
   }
 
   return null
