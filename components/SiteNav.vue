@@ -1,9 +1,9 @@
 <template>
-  <header class="sticky top-0 z-50 border-b border-border/60 bg-canvas/80 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-6">
-      <NuxtLink class="flex items-center gap-3" to="/" @click="closeMenu">
+  <header class="relative z-50 md:sticky md:top-0">
+    <div class="md:ui-glass mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:mt-3 md:rounded-2xl md:px-4 md:py-2.5 lg:max-w-[74rem]">
+      <NuxtLink class="flex items-center gap-3" to="/" aria-label="Home">
         <div
-          class="flex h-9 w-9 items-center justify-center rounded-xl border border-border/60 bg-surface-strong text-[11px] font-semibold text-slate-100 shadow-panel"
+          class="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-gradient-to-br from-accent/25 to-accent-2/25 text-[11px] font-semibold text-white shadow-glass"
         >
           {{ profile.initials }}
         </div>
@@ -13,139 +13,123 @@
         </div>
       </NuxtLink>
 
-      <nav class="hidden items-center gap-6 md:flex">
-        <NuxtLink v-for="item in navItems" :key="item.label" class="ui-link" :to="item.to">
+      <nav ref="navElement" class="relative hidden items-center md:flex" aria-label="Primary">
+        <span
+          class="absolute inset-y-0 rounded-full border border-white/10 bg-white/[0.07] transition-[transform,width,opacity] duration-500 ease-spring"
+          :style="pillStyle"
+          aria-hidden="true"
+        />
+        <NuxtLink
+          v-for="item in desktopItems"
+          :key="item.key"
+          :ref="(el) => setLinkRef(item.key, el)"
+          class="relative rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+          :class="activeKey === item.key ? 'text-white' : 'text-slate-400 hover:text-white'"
+          :to="item.to"
+          :aria-current="activeKey === item.key ? 'page' : undefined"
+        >
           {{ item.label }}
         </NuxtLink>
       </nav>
 
-      <button
-        class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-surface-strong text-slate-100 md:hidden"
-        type="button"
-        :aria-expanded="isMenuOpen ? 'true' : 'false'"
-        :aria-controls="mobileMenuId"
-        aria-label="Open navigation menu"
-        @click="toggleMenu"
-      >
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </svg>
-      </button>
+      <a class="ui-cta-primary !min-h-0 !px-4 !py-2 !text-xs" href="/resume.pdf" download>Resume</a>
     </div>
 
+    <!-- Scroll progress hairline (desktop). -->
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px md:block" aria-hidden="true">
+      <div
+        class="h-full origin-left bg-gradient-to-r from-accent via-[#6fe3c0] to-accent-2"
+        :style="{ transform: `scaleX(${progress})` }"
+      />
+    </div>
   </header>
 
-  <Teleport to="body">
-    <Transition
-      enter-active-class="transition-opacity duration-200"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-150"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div v-if="isMenuOpen" class="fixed inset-0 z-[100] md:hidden">
-        <button
-          class="absolute inset-0 bg-canvas/90 backdrop-blur-sm"
-          type="button"
-          aria-label="Close navigation menu"
-          @click="closeMenu"
-        />
-        <aside
-          :id="mobileMenuId"
-          role="dialog"
-          aria-modal="true"
-          class="absolute right-0 top-0 flex h-dvh w-[88vw] max-w-[320px] flex-col border-l border-border/70 bg-canvas-2 px-5 pb-7 pt-5 shadow-panel animate-drawer-in"
-        >
-          <div class="mb-6 flex items-center justify-between border-b border-border/60 pb-4">
-            <div>
-              <p class="ui-eyebrow">Navigation</p>
-              <p class="mt-1 text-3xl font-semibold tracking-tight text-slate-100">{{ profile.shortName }}</p>
-            </div>
-            <button
-              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-surface-strong text-slate-100"
-              type="button"
-              aria-label="Close navigation menu"
-              @click="closeMenu"
-            >
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            </button>
-          </div>
-
-          <nav class="flex flex-col gap-3">
-            <NuxtLink
-              v-for="item in navItems"
-              :key="item.label"
-              class="rounded-2xl border border-border/70 bg-surface px-4 py-3 text-2xl font-semibold tracking-tight text-slate-100 transition hover:border-accent-2/45 hover:bg-surface-strong"
-              :to="item.to"
-              @click="closeMenu"
-            >
-              {{ item.label }}
-            </NuxtLink>
-          </nav>
-        </aside>
-      </div>
-    </Transition>
-  </Teleport>
+  <SiteTabBar :items="tabItems" :active-key="activeKey" />
 </template>
 
 <script setup lang="ts">
+import type { ComponentPublicInstance } from 'vue'
+import SiteTabBar from '~/components/SiteTabBar.vue'
+import type { TabItem } from '~/components/SiteTabBar.vue'
+
 const profile = useProfile()
 const route = useRoute()
 
-type NavItem = {
-  label: string
-  to: string
-}
-
-const navItems: NavItem[] = [
-  { label: 'About', to: '/about' },
-  { label: 'Work', to: '/#work' },
-  { label: 'Toolbox', to: '/#toolbox' },
-  { label: 'Contact', to: '/#contact' }
+const tabItems: TabItem[] = [
+  { key: 'home', label: 'Home', to: '/', icon: 'home' },
+  { key: 'work', label: 'Work', to: '/#work', icon: 'work' },
+  { key: 'stack', label: 'Stack', to: '/#toolbox', icon: 'stack' },
+  { key: 'about', label: 'About', to: '/about', icon: 'about' },
+  { key: 'contact', label: 'Contact', to: '/#contact', icon: 'contact' }
 ]
+const desktopItems = tabItems.filter((item) => item.key !== 'home')
 
-const mobileMenuId = 'site-mobile-nav'
-const isMenuOpen = ref(false)
+const sectionToKey: Record<string, string> = { work: 'work', 'play-store': 'work', toolbox: 'stack', contact: 'contact' }
+const spied = useSectionSpy(Object.keys(sectionToKey))
 
-const closeMenu = () => {
-  isMenuOpen.value = false
-}
-
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && isMenuOpen.value) {
-    closeMenu()
-  }
-}
-
-watch(
-  () => route.fullPath,
-  () => {
-    closeMenu()
-  }
-)
-
-watch(isMenuOpen, (isOpen) => {
-  if (!import.meta.client) {
-    return
-  }
-  document.body.style.overflow = isOpen ? 'hidden' : ''
+const activeKey = computed(() => {
+  const path = route.path.replace(/\/$/, '') || '/'
+  if (path === '/about') return 'about'
+  if (path === '/contact') return 'contact'
+  if (path === '/projects') return 'work'
+  if (path !== '/') return ''
+  return spied.value ? (sectionToKey[spied.value] ?? 'home') : 'home'
 })
 
+// ---- Sliding active pill ----
+const navElement = ref<HTMLElement | null>(null)
+const linkElements = new Map<string, HTMLElement>()
+const pill = ref({ x: 0, width: 0, visible: false })
+
+const setLinkRef = (key: string, el: Element | ComponentPublicInstance | null) => {
+  const element = el && '$el' in el ? (el.$el as HTMLElement) : (el as HTMLElement | null)
+  if (element) {
+    linkElements.set(key, element)
+  } else {
+    linkElements.delete(key)
+  }
+}
+
+const measurePill = () => {
+  const link = linkElements.get(activeKey.value)
+  if (!link) {
+    pill.value = { ...pill.value, visible: false }
+    return
+  }
+  pill.value = { x: link.offsetLeft, width: link.offsetWidth, visible: true }
+}
+
+const pillStyle = computed(() => ({
+  width: `${pill.value.width}px`,
+  transform: `translateX(${pill.value.x}px)`,
+  opacity: pill.value.visible ? 1 : 0
+}))
+
+watch(activeKey, () => nextTick(measurePill))
+
+// ---- Scroll progress ----
+const progress = ref(0)
+let frame = 0
+const updateProgress = () => {
+  cancelAnimationFrame(frame)
+  frame = requestAnimationFrame(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    progress.value = max > 0 ? Math.min(window.scrollY / max, 1) : 0
+  })
+}
+
 onMounted(() => {
-  window.addEventListener('keydown', handleEscape)
+  measurePill()
+  updateProgress()
+  window.addEventListener('scroll', updateProgress, { passive: true })
+  window.addEventListener('resize', measurePill, { passive: true })
+  // Pill widths depend on the web font; re-measure once it is in.
+  document.fonts?.ready.then(measurePill).catch(() => {})
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleEscape)
-  if (import.meta.client) {
-    document.body.style.overflow = ''
-  }
+  cancelAnimationFrame(frame)
+  window.removeEventListener('scroll', updateProgress)
+  window.removeEventListener('resize', measurePill)
 })
 </script>

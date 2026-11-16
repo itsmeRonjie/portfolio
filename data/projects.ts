@@ -10,6 +10,12 @@ export type Project = {
   previewImage?: string
   previewAlt?: string
   isPlaceholder?: boolean
+  /** Shown as a full case study with a device the 3D stage docks into. */
+  featured?: {
+    slot: string
+    device: 'android' | 'ios'
+    platforms: string
+  }
 }
 
 export const projects: Project[] = [
@@ -26,6 +32,7 @@ export const projects: Project[] = [
     link: 'https://dinkboard.ronjiemanon.com',
     linkLabel: 'Open app site',
     previewImage: '/apps/dinkboard/dinkboard-app-icon.svg',
+    featured: { slot: 'work.dinkboard', device: 'ios', platforms: 'Android · iOS · watchOS' },
     previewAlt: 'DinkBoard app icon'
   },
   {
@@ -41,6 +48,7 @@ export const projects: Project[] = [
     link: 'https://moneymanager.ronjiemanon.com',
     linkLabel: 'Open app site',
     previewImage: '/apps/money-manager/screen-home-latest.png',
+    featured: { slot: 'work.money-manager', device: 'android', platforms: 'Android · Google Play' },
     previewAlt: 'Money Manager home dashboard screenshot'
   },
   {

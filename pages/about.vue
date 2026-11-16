@@ -1,10 +1,10 @@
 <template>
   <div>
     <SiteNav />
-    <main class="mx-auto max-w-6xl px-6 pb-16 pt-12">
-      <header class="space-y-4">
+    <main class="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:px-6 sm:pt-14">
+      <header v-reveal class="space-y-4">
         <p class="ui-eyebrow">About</p>
-        <h1 class="text-3xl font-semibold text-white sm:text-4xl">Ronjie Man-on</h1>
+        <h1 class="text-section font-semibold text-white sm:text-[clamp(2.25rem,3vw+1rem,3.5rem)]">Ronjie Man-on</h1>
         <p class="max-w-3xl text-sm text-slate-300">
           Ronjie Man-on is a software engineer and mobile application developer focused on Android and iOS.
         </p>
@@ -14,7 +14,7 @@
       </header>
 
       <section class="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <article class="ui-panel">
+        <article v-reveal v-tilt="{ max: 3 }" class="ui-panel">
           <h2 class="text-lg font-semibold text-white">Professional Summary</h2>
           <p class="mt-4 text-sm leading-relaxed text-slate-300">
             {{ profile.summary }}
@@ -30,7 +30,7 @@
           </div>
         </article>
 
-        <article class="ui-panel">
+        <article v-reveal v-tilt="{ max: 3 }" class="ui-panel">
           <h2 class="text-lg font-semibold text-white">Primary Focus</h2>
           <ul class="mt-4 space-y-2 text-sm text-slate-300">
             <li class="flex gap-2">
@@ -50,11 +50,12 @@
       </section>
 
       <section class="mt-12">
-        <h2 class="text-2xl font-semibold text-white">Experience</h2>
+        <h2 v-reveal class="ui-section-title">Experience</h2>
         <div class="mt-6 space-y-4">
           <article
             v-for="role in profile.experience"
             :key="role.role"
+            v-reveal
             class="ui-panel"
           >
             <div class="flex flex-wrap items-center justify-between gap-2">

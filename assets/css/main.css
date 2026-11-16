@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,6 +14,27 @@
   --ios: #5ac8fa;
   --terminal: #7ee787;
   --focus-ring: #5ac8fa;
+
+  /* Height of the sticky desktop nav; anchors and the 3D stage both key off it. */
+  --nav-h: 4.25rem;
+  --anchor-offset: calc(var(--nav-h) + 1rem);
+
+  /* Spring step responses sampled into linear() so CSS motion matches the 3D stage's springs. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: linear(
+    0, 0.04 3.8%, 0.137 7.7%, 0.263 11.5%, 0.398 15.4%, 0.529 19.2%, 0.647 23.1%, 0.749 26.9%, 0.832 30.8%,
+    0.897 34.6%, 0.947 38.5%, 0.982 42.3%, 1.006 46.2%, 1.021 50%, 1.029 53.8%, 1.031 57.7%, 1.031 61.5%,
+    1.028 65.4%, 1.024 69.2%, 1.02 73.1%, 1.016 76.9%, 1.012 80.8%, 1.009 84.6%, 1.006 88.5%, 1.004 92.3%,
+    1.002 96.2%, 1
+  );
+  --ease-spring-bouncy: linear(
+    0, 0.061 2.9%, 0.211 5.9%, 0.403 8.8%, 0.602 11.8%, 0.782 14.7%, 0.929 17.6%, 1.037 20.6%, 1.106 23.5%,
+    1.14 26.5%, 1.147 29.4%, 1.135 32.4%, 1.111 35.3%, 1.082 38.2%, 1.053 41.2%, 1.028 44.1%, 1.007 47.1%,
+    0.992 50%, 0.983 52.9%, 0.979 55.9%, 0.978 58.8%, 0.981 61.8%, 0.984 64.7%, 0.989 67.6%, 0.993 70.6%,
+    0.997 73.5%, 0.999 76.5%, 1.001 79.4%, 1.003 82.4%, 1.003 85.3%, 1.003 88.2%, 1.003 91.2%, 1.002 94.1%,
+    1.002 97.1%, 1
+  );
+
   color-scheme: dark;
 }
 
@@ -23,12 +42,37 @@ body {
   min-height: 100vh;
   font-family: 'Sora', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   background-color: var(--bg);
-  background-image:
+  background-image: linear-gradient(180deg, #070b11 0%, #0b1018 56%, #070b11 100%);
+  color: var(--text);
+  /* Tilted device fallbacks and glows may poke past the edge; clip keeps sticky elements working. */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ambient backdrop: brand color fields plus a dot grid. Static on purpose, so an idle page costs nothing. */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  background:
     radial-gradient(560px at 8% 10%, rgba(61, 220, 132, 0.16), transparent 62%),
     radial-gradient(700px at 90% 12%, rgba(90, 200, 250, 0.16), transparent 58%),
-    radial-gradient(880px at 50% 115%, rgba(84, 153, 225, 0.11), transparent 68%),
-    linear-gradient(180deg, #070b11 0%, #0b1018 56%, #070b11 100%);
-  color: var(--text);
+    radial-gradient(880px at 50% 115%, rgba(84, 153, 225, 0.11), transparent 68%);
+}
+
+body::after {
+  background-image: radial-gradient(rgba(148, 168, 196, 0.2) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 62% at 50% 0%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 62% at 50% 0%, #000 0%, transparent 78%);
+  opacity: 0.45;
 }
 
 h1,
@@ -53,13 +97,38 @@ pre {
   outline-offset: 2px;
 }
 
+/* Keep anchored sections clear of the sticky nav (Nuxt's router reads this too). */
+section[id] {
+  scroll-margin-top: var(--anchor-offset);
+}
+
 @layer components {
+  /* Panels sit on a smooth gradient, so a backdrop blur would cost GPU time for no visible change. */
   .ui-panel {
-    @apply rounded-3xl border border-border/70 bg-surface p-6 shadow-panel backdrop-blur-md;
+    @apply rounded-3xl border border-border/70 bg-surface p-6;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 24px 70px rgba(1, 6, 12, 0.45);
   }
 
   .ui-panel-strong {
-    @apply rounded-3xl border border-border/70 bg-surface-strong p-6 shadow-panel backdrop-blur-md;
+    @apply rounded-3xl border border-border/70 bg-surface-strong p-6;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 70px rgba(1, 6, 12, 0.45);
+  }
+
+  /* Frosted surface for chrome that content scrolls underneath (nav, tab bar). */
+  .ui-glass {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+      rgba(9, 14, 22, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 18px 50px rgba(1, 6, 12, 0.5);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
   }
 
   .ui-chip {
@@ -70,16 +139,226 @@ pre {
     @apply font-mono text-[11px] uppercase tracking-[0.26em] text-slate-400;
   }
 
+  .ui-display {
+    @apply text-display font-semibold text-white;
+  }
+
+  .ui-tagline {
+    @apply text-tagline font-semibold text-slate-100;
+  }
+
+  .ui-section-title {
+    @apply text-section font-semibold text-white;
+  }
+
   .ui-cta-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent/50 bg-accent px-5 py-2.5 text-sm font-semibold text-[#052414] shadow-glow transition hover:-translate-y-0.5 hover:brightness-105;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-accent/50 bg-accent px-5 py-2.5 text-sm font-semibold text-[#052414] shadow-glow;
+    transition:
+      transform 0.5s var(--ease-spring),
+      filter 0.2s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .ui-cta-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 0 56px rgba(61, 220, 132, 0.4);
   }
 
   .ui-cta-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-surface-strong px-5 py-2.5 text-sm font-semibold text-slate-100 transition hover:border-accent-2/80 hover:text-white;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border/70 bg-surface-strong px-5 py-2.5 text-sm font-semibold text-slate-100;
+    transition:
+      transform 0.5s var(--ease-spring),
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .ui-cta-secondary:hover {
+    @apply border-accent-2/80 text-white;
+    transform: translateY(-2px);
+  }
+
+  /* Native-style press feedback. */
+  .ui-cta-primary:active,
+  .ui-cta-secondary:active {
+    transform: scale(0.96);
+    transition-duration: 0.12s;
   }
 
   .ui-link {
     @apply text-sm font-semibold text-accent-2 transition hover:text-white;
+  }
+}
+
+/* Android green to iOS blue: the two platforms in one stroke. */
+.text-gradient {
+  background: linear-gradient(100deg, var(--android) 0%, #6fe3c0 45%, var(--ios) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 1px gradient hairline that follows the element's radius. */
+.ui-edge {
+  position: relative;
+}
+
+.ui-edge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--edge-from, rgba(61, 220, 132, 0.5)),
+    rgba(255, 255, 255, 0.05) 40%,
+    var(--edge-to, rgba(90, 200, 250, 0.45))
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+.ui-marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+/* ---- v-reveal: elements rise in the first time they scroll into view ---- */
+/* The pending class is only ever added by client code to off-screen elements, */
+/* so server-rendered and no-JS pages always show their content. */
+.reveal-pending {
+  opacity: 0;
+  translate: 0 26px;
+  scale: 0.975;
+}
+
+.reveal-run {
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    translate 0.95s var(--ease-spring),
+    scale 0.95s var(--ease-spring);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ---- v-tilt: pointer-driven 3D tilt with a moving glare ---- */
+.tilt {
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.7s var(--ease-spring);
+}
+
+.tilt.is-tilting {
+  transition: transform 0.12s linear;
+  will-change: transform;
+}
+
+.tilt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    460px circle at var(--glare-x, 50%) var(--glare-y, 0%),
+    rgba(255, 255, 255, 0.1),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.tilt.is-tilting::after {
+  opacity: 1;
+}
+
+/* ---- 3D stage ---- */
+/* One fixed, click-through canvas above page content and below the nav. Sized to the large */
+/* viewport so mobile browser chrome sliding in and out never resizes the WebGL buffer. */
+.stage-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.stage-canvas.is-live {
+  opacity: 1;
+}
+
+.stage-slot {
+  position: relative;
+}
+
+.stage-slot__fallback {
+  height: 100%;
+  transition: opacity 0.5s ease;
+}
+
+.stage-slot.is-live .stage-slot__fallback {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stage-slot.is-interactive.is-live {
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.stage-slot.is-dragging {
+  cursor: grabbing !important;
+}
+
+/* ---- Page transitions ---- */
+.page-enter-active {
+  transition: opacity 0.3s var(--ease-out-expo);
+}
+
+.page-leave-active {
+  transition: opacity 0.14s ease-in;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+
+.page-enter-active main {
+  animation: page-rise 0.7s var(--ease-spring) both;
+}
+
+@keyframes page-rise {
+  from {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ---- Mobile tab bar ---- */
+@media (max-width: 767px) {
+  /* The floating tab bar replaces the sticky header on phones: reserve room for it */
+  /* and stop anchors from over-compensating for a header that scrolls away. */
+  body:has(.site-tabbar) {
+    --anchor-offset: 1.25rem;
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -91,5 +370,10 @@ pre {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .reveal-pending {
+    translate: none;
+    scale: none;
   }
 }

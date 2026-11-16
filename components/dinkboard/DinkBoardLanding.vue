@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#07100a] text-[#eefbdf]">
+  <StageRoot scene="dinkboard" class="min-h-screen bg-[#07100a] text-[#eefbdf]">
     <DinkBoardNav
       :play-store-url="content.playStoreUrl"
       :app-icon-path="content.appIconPath"
@@ -44,7 +44,7 @@
         </div>
       </div>
     </section>
-  </div>
+  </StageRoot>
 </template>
 
 <script setup lang="ts">

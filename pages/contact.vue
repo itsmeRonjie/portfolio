@@ -1,17 +1,17 @@
 <template>
   <div>
     <SiteNav />
-    <main class="mx-auto max-w-6xl px-6 pb-16 pt-12">
-      <header class="space-y-4">
+    <main class="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:px-6 sm:pt-14">
+      <header v-reveal class="space-y-4">
         <p class="ui-eyebrow">Contact</p>
-        <h1 class="text-3xl font-semibold text-white sm:text-4xl">Build Mobile Products With Me</h1>
+        <h1 class="text-section font-semibold text-white sm:text-[clamp(2.25rem,3vw+1rem,3.5rem)]">Build Mobile Products With Me</h1>
         <p class="max-w-2xl text-sm text-slate-300">
           {{ profile.summary }}
         </p>
       </header>
 
       <div class="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <section class="ui-panel">
+        <section v-reveal class="ui-panel">
           <h2 class="text-lg font-semibold text-white">Studio Contact Details</h2>
           <div class="mt-4 space-y-3 text-sm text-slate-300">
             <div class="flex items-center justify-between border-b border-border/60 pb-3">
@@ -58,7 +58,7 @@
           </p>
         </section>
 
-        <section class="ui-panel">
+        <section v-reveal class="ui-panel">
           <h2 class="text-lg font-semibold text-white">Delivery Highlights</h2>
           <ul class="mt-4 space-y-2 text-sm text-slate-300">
             <li v-for="item in profile.highlights" :key="item" class="flex gap-2">
@@ -119,11 +119,12 @@
 
       <section class="mt-12">
         <p class="ui-eyebrow">Experience</p>
-        <h2 class="mt-2 text-2xl font-semibold text-white">Professional Mobile Roles</h2>
+        <h2 class="ui-section-title mt-3">Professional Mobile Roles</h2>
         <div class="mt-6 space-y-6">
           <div
             v-for="role in profile.experience"
             :key="role.role"
+            v-reveal
             class="ui-panel"
           >
             <div class="flex flex-wrap items-center justify-between gap-2">
@@ -145,11 +146,12 @@
 
       <section class="mt-12">
         <p class="ui-eyebrow">Education</p>
-        <h2 class="mt-2 text-2xl font-semibold text-white">Training Foundation</h2>
+        <h2 class="ui-section-title mt-3">Training Foundation</h2>
         <div class="mt-6 grid gap-4 md:grid-cols-2">
           <div
             v-for="program in profile.education"
             :key="program.program"
+            v-reveal
             class="ui-panel"
           >
             <h3 class="text-lg font-semibold text-white">{{ program.program }}</h3>
