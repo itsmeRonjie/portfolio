@@ -1,6 +1,7 @@
 <template>
-  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    <div v-if="!hasDeveloper" class="ui-panel sm:col-span-2 lg:col-span-3">
+  <!-- Two listings read better as two wide cards than as two-thirds of a row. -->
+  <div class="grid gap-5 sm:grid-cols-2" :class="!pending && !error && apps.length <= 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3'">
+    <div v-if="!hasDeveloper" class="ui-panel col-span-full">
       <p class="text-sm text-slate-300">
         Add your Play Store developer ID in <span class="font-semibold">data/playStore.ts</span> to enable listings.
       </p>
@@ -20,7 +21,7 @@
       </div>
     </template>
 
-    <div v-else-if="error" class="ui-panel sm:col-span-2 lg:col-span-3">
+    <div v-else-if="error" class="ui-panel col-span-full">
       <p class="text-sm text-slate-300">Unable to load Play Store listings right now. Try again in a moment.</p>
       <button class="ui-cta-secondary mt-4 !px-4 !py-2" type="button" @click="refresh()">Retry</button>
     </div>
@@ -29,7 +30,7 @@
       <div v-for="(app, index) in apps" :key="app.id" v-reveal="{ delay: index * 70, appear: true }">
         <PlayStoreAppCard :app="app" />
       </div>
-      <div v-if="apps.length === 0" class="ui-panel sm:col-span-2 lg:col-span-3">
+      <div v-if="apps.length === 0" class="ui-panel col-span-full">
         <p class="text-sm text-slate-300">No Play Store apps found for this developer.</p>
       </div>
     </template>

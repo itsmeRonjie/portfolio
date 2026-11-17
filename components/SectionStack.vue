@@ -13,7 +13,12 @@
       </div>
     </div>
 
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- How the apps are layered: an exploded 3D view of MVVM + Clean Architecture. -->
+    <div class="mt-8">
+      <ArchitectureLayers />
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <article
         v-for="(tool, index) in platforms"
         :key="tool.name"
@@ -87,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import ArchitectureLayers from '~/components/ArchitectureLayers.vue'
 import ToolIcon from '~/components/ToolIcon.vue'
 
 const tools = useToolbox()

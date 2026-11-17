@@ -36,6 +36,8 @@ export type Frame = {
 export interface StageActor {
   /** Advance one frame. Return true while the actor still needs frames (on screen or moving). */
   update(frame: Frame): boolean
+  /** Development aid: a snapshot of where the actor is. */
+  debug?(): Record<string, unknown>
 }
 
 export type PointerPhase = 'start' | 'move' | 'end' | 'tap'
@@ -143,7 +145,44 @@ export class Stage {
     this.reducedMotion = options.reducedMotion
     this.motionPaused = options.motionPaused ?? false
     if (import.meta.dev) {
-      ;(window as unknown as { __stage?: Stage['stats'] }).__stage = this.stats
+      const debug = window as unknown as {
+        __stage?: Stage['stats']
+        __stageStep?: (frames?: number) => void
+        __stageActors?: () => unknown[]
+      }
+      debug.__stage = this.stats
+      // Where every actor is, in CSS pixels: lets the choreography be checked without seeing the canvas.
+      debug.__stageActors = () => {
+        const { viewport, world } = this.frame
+        return this.actors.flatMap((actor) => {
+          const info = actor.debug?.()
+          if (!info) {
+            return []
+          }
+          const x = Number(info.x)
+          const y = Number(info.y)
+          return [
+            {
+              ...info,
+              left: Math.round(x / world.perPx + viewport.width / 2),
+              top: Math.round(viewport.height / 2 - y / world.perPx)
+            }
+          ]
+        })
+      }
+      // Advance the loop by hand: background tabs get no animation frames, which makes
+      // settled poses impossible to inspect there otherwise.
+      debug.__stageStep = (frames = 60) => {
+        // A hidden document pauses the stage; stepping by hand should still work there.
+        const wasPaused = this.paused
+        this.paused = false
+        let now = performance.now()
+        for (let index = 0; index < frames; index += 1) {
+          now += 1000 / 60
+          this.tick(now)
+        }
+        this.paused = wasPaused
+      }
     }
 
     // Throws when WebGL2 is unavailable; the caller treats that as "keep the static fallbacks".

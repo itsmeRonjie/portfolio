@@ -41,6 +41,8 @@ export type DockedActorOptions = {
   /** Extra yaw (radians) and lift (world units) at the midpoint of a flight between stations. */
   spin?: number
   lift?: number
+  /** Yaw (radians) added per viewport-height the device sits below the middle of the screen. */
+  swing?: number
   /** Seconds to wait before the entrance animation. */
   introDelay?: number
 }
@@ -57,11 +59,17 @@ type Target = {
   /** Scroll position at which this station sits in the middle of the viewport. */
   focus: number
   presence: number
+  /** Signed distance from the middle of the viewport, in viewport heights (positive = below). */
+  lean: number
+  /** Height the device occupies on screen at this station, in CSS pixels. */
+  span: number
 }
 
 const DRAG_YAW_PER_PX = 0.011
 const DRAG_PITCH_PER_PX = 0.006
 const DRAG_RETURN_SECONDS = 1.6
+// How far a device tips back as it rises from below the fold (radians per viewport height).
+const LEAN_PITCH = 0.5
 
 /**
  * A device that docks into DOM slots and travels between them as the page scrolls.
@@ -70,6 +78,10 @@ const DRAG_RETURN_SECONDS = 1.6
  * blend between stations is scroll-scrubbed and damped, and rotation, scale, drag and
  * pointer tilt all run on springs. That split is what makes it read as a floating
  * object rather than something lagging behind the DOM.
+ *
+ * Neighbouring stations that share the screen get a real flight between them. Stations
+ * too far apart for that swap while both are off screen, so the device leaves with one
+ * section and arrives with the next instead of drifting over the content in between.
  */
 export class DockedActor implements StageActor {
   readonly root = new Group()
@@ -84,6 +96,7 @@ export class DockedActor implements StageActor {
   private readonly userPitch = new Spring(0, 120, 0.9)
 
   private progress = 0
+  private jumping = false
   private primed = false
   private dragging = false
   private releasedAt = -Infinity
@@ -113,6 +126,18 @@ export class DockedActor implements StageActor {
   /** Whether the device was inside the viewport on the last frame. */
   get onScreen() {
     return this.root.visible
+  }
+
+  debug() {
+    return {
+      slot: this.station,
+      visible: this.root.visible,
+      x: this.root.position.x,
+      y: this.root.position.y,
+      scale: Number(this.root.scale.x.toFixed(3)),
+      progress: Number(this.progress.toFixed(3)),
+      jumping: this.jumping
+    }
   }
 
   slots(wide: boolean) {
@@ -157,7 +182,8 @@ export class DockedActor implements StageActor {
     }
 
     // Scroll-scrubbed, then damped: flights ease out instead of stopping dead with the wheel.
-    this.progress = reducedMotion ? goal : damp(this.progress, goal, 9, dt)
+    // A swap between distant stations is instant; it happens off screen.
+    this.progress = reducedMotion || this.jumping ? goal : damp(this.progress, goal, 9, dt)
 
     const last = targets.length - 1
     const index = clamp(Math.floor(this.progress), 0, Math.max(last - 1, 0))
@@ -191,10 +217,16 @@ export class DockedActor implements StageActor {
     const sway = Math.sin(time * speed * 0.46 + phase * 1.7)
     const parallax = reducedMotion ? 0 : (this.options.parallax ?? 0.1)
     const direction = Math.sign(to.x - from.x) || 1
+    // Scroll-linked attitude: tipped back and turned while below the fold, squaring up as it
+    // reaches the middle of the screen, then tipping forward as it leaves over the top.
+    const lean = reducedMotion ? 0 : clamp(lerp(from.lean, to.lean, t), -0.9, 0.9)
 
     this.yaw.target =
-      lerp(from.yaw, to.yaw, t) + flight * (this.options.spin ?? 0) * direction + frame.pointer.x * parallax
-    this.pitch.target = lerp(from.pitch, to.pitch, t) + frame.pointer.y * parallax * 0.6
+      lerp(from.yaw, to.yaw, t) +
+      flight * (this.options.spin ?? 0) * direction +
+      lean * (this.options.swing ?? 0) +
+      frame.pointer.x * parallax
+    this.pitch.target = lerp(from.pitch, to.pitch, t) - lean * LEAN_PITCH + frame.pointer.y * parallax * 0.6
     this.roll.target = lerp(from.roll, to.roll, t)
     this.presence.target = lerp(from.presence, to.presence, t)
 
@@ -250,6 +282,7 @@ export class DockedActor implements StageActor {
 
   /** Where the device should be along its stations (0 = first, 1 = second...), from the scroll position. */
   private goal(targets: Target[], frame: Frame) {
+    this.jumping = false
     if (targets.length < 2) {
       return 0
     }
@@ -263,8 +296,14 @@ export class DockedActor implements StageActor {
     const to = targets[index + 1]!
     const viewport = frame.viewport.height
     const gap = Math.max(to.focus - from.focus, 1)
-    // Stay docked near each station, then travel. Long gaps travel only on the approach, so the
-    // device leaves with its section and swoops in for the next one instead of drifting between.
+
+    // Halfway between two distant stations both are off screen: swap there, unseen.
+    if (gap > viewport + Math.max(from.span, to.span) * 1.2) {
+      this.jumping = true
+      return index + (frame.scrollY > (from.focus + to.focus) / 2 ? 1 : 0)
+    }
+
+    // Stay docked near each station, then fly across in between.
     const hold = Math.min(0.2 * viewport, 0.28 * gap)
     const travel = Math.min(gap - hold * 2, 0.85 * viewport)
     const end = to.focus - hold
@@ -317,7 +356,9 @@ export class DockedActor implements StageActor {
         pitch: 0,
         roll: 0,
         focus: 0,
-        presence: 1
+        presence: 1,
+        lean: 0,
+        span: 0
       })
       target.slot = station.slot
       target.x = (centerX - viewport.width / 2) * world.perPx + (pose.x ?? 0) * offset
@@ -329,10 +370,8 @@ export class DockedActor implements StageActor {
       target.roll = pose.roll ?? 0
       target.focus = clamp(frame.scrollY + centerY - viewport.height / 2, 0, frame.maxScroll)
       target.presence = station.appear ? 1 - smoothstep((distance - 0.3) / 0.28) : 1
-
-      // A station far off screen parks the device just outside the viewport, so flights stay short.
-      const wing = world.height / 2 + size.height * scale * 0.75
-      target.y = clamp(target.y, -wing, wing)
+      target.lean = (centerY - viewport.height / 2) / viewport.height
+      target.span = (size.height * scale) / world.perPx
 
       count += 1
     }

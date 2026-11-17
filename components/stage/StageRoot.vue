@@ -76,15 +76,16 @@ const context: StageContext = {
 
 provide(STAGE_KEY, context)
 
-/** Reasons to keep the static devices: an explicit opt-out, data saver, or no WebGL2. */
-const shouldRender = () => {
+/** Deliberate reasons to keep the static devices: an explicit opt-out or data saver. */
+const optedOut = () => {
   if ('no3d' in route.query) {
-    return false
+    return true
   }
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-  if (connection?.saveData) {
-    return false
-  }
+  return !!connection?.saveData
+}
+
+const hasWebGL = () => {
   try {
     const probe = document.createElement('canvas').getContext('webgl2')
     // Release the probe right away rather than leaving a live context for the garbage collector.
@@ -93,6 +94,21 @@ const shouldRender = () => {
   } catch {
     return false
   }
+}
+
+// The browser can refuse a context for a moment (a tab coming to the front, the GPU process
+// restarting). Try again a couple of times before settling for the static devices.
+const MAX_RETRIES = 2
+const RETRY_MS = 2500
+let retries = 0
+
+const retryLater = () => {
+  if (disposed || retries >= MAX_RETRIES) {
+    return
+  }
+  retries += 1
+  const id = window.setTimeout(() => void boot(), RETRY_MS)
+  cancelBoot = () => window.clearTimeout(id)
 }
 
 const teardown = () => {
@@ -105,7 +121,11 @@ const teardown = () => {
 }
 
 const boot = async () => {
-  if (disposed || !shouldRender()) {
+  if (disposed || stage || optedOut()) {
+    return
+  }
+  if (!hasWebGL()) {
+    retryLater()
     return
   }
 
@@ -161,6 +181,7 @@ const boot = async () => {
     }
     teardown()
     enabled.value = false
+    retryLater()
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="relative mx-auto grid max-w-6xl items-center gap-8 px-5 pb-10 pt-8 sm:px-6 lg:min-h-[calc(100svh-var(--nav-h))] lg:grid-cols-[1.02fr_0.98fr] lg:gap-6 lg:pb-16 lg:pt-6">
+  <section class="relative mx-auto grid max-w-6xl items-center gap-8 overflow-x-clip px-5 pb-10 pt-8 sm:px-6 lg:min-h-[calc(100svh-var(--nav-h))] lg:grid-cols-[1.02fr_0.98fr] lg:gap-6 lg:pb-16 lg:pt-6">
     <div class="relative z-10 space-y-6">
       <p class="ui-eyebrow animate-stagger-in">Mobile Engineering</p>
       <!-- A real space between the names (for search engines and screen readers); the surname never splits at its hyphen. -->
@@ -47,13 +47,19 @@
 
     <!-- Device stage: two phones running real apps. 3D when WebGL is available, CSS otherwise. -->
     <div class="relative animate-stagger-in [animation-delay:140ms]">
-      <StageSlot id="hero.stage" :interactive="false" class="relative mx-auto h-[min(118vw,460px)] w-full max-w-[520px] sm:h-[520px] lg:h-[min(640px,calc(100svh-11rem))]">
-        <StageSlot id="hero.ios" class="!absolute left-[5%] top-[9%] h-[80%] w-[42%]">
+      <StageSlot id="hero.stage" :interactive="false" class="relative mx-auto h-[min(116vw,480px)] w-full max-w-[540px] sm:h-[560px] lg:h-[min(680px,calc(100svh-9.5rem))] xl:max-w-[600px]">
+        <!-- Stage light: a soft pool of the two platform colors behind the devices. -->
+        <div
+          class="pointer-events-none absolute -inset-[14%] rounded-full bg-[radial-gradient(closest-side,rgba(61,220,132,0.2),rgba(90,200,250,0.12)_48%,transparent_74%)]"
+          aria-hidden="true"
+        />
+        <!-- Slot layout: the logo tiles in lib/three/scenes/portfolio.ts are placed in the gaps this leaves. -->
+        <StageSlot id="hero.ios" class="!absolute left-[3%] top-[12%] h-[78%] w-[45%] lg:left-[8%] lg:top-[14%] lg:h-[74%] lg:w-[40%]">
           <DeviceFrame variant="ios" tone="titanium" class="-rotate-[5deg] opacity-80">
             <DinkBoardScoreboard :score="scoreState" />
           </DeviceFrame>
         </StageSlot>
-        <StageSlot id="hero.android" class="!absolute right-[5%] top-[3%] h-[90%] w-[46%]">
+        <StageSlot id="hero.android" class="!absolute right-[3%] top-[3%] h-[92%] w-[49%] lg:right-[7%] lg:top-[4%] lg:h-[90%] lg:w-[45%]">
           <DeviceFrame variant="android" tone="graphite" class="rotate-[4deg]">
             <img
               :key="activeShot?.id"

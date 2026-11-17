@@ -18,7 +18,7 @@ export type DeviceActor = {
   baseGlow: number
 }
 
-type ActorTuning = Pick<DockedActorOptions, 'float' | 'parallax' | 'spin' | 'lift' | 'introDelay'>
+type ActorTuning = Pick<DockedActorOptions, 'float' | 'parallax' | 'spin' | 'lift' | 'swing' | 'introDelay'>
 
 export class SceneKit {
   readonly bin = new Disposer()
@@ -92,7 +92,7 @@ export class SceneKit {
   tiles(
     slot: string,
     rim: ColorRepresentation,
-    items: { icon: string; x: number; y: number; size: number; yaw: number; delay: number }[]
+    items: { icon: string; x: number; y: number; z: number; size: number; yaw: number; delay: number }[]
   ) {
     const make = createTileKit(rim, this.bin)
     items.forEach((item, index) => {
@@ -104,7 +104,7 @@ export class SceneKit {
           {
             slot,
             region: { x: item.x, y: item.y, height: item.size },
-            pose: { yaw: item.yaw, pitch: 0.18, z: -0.6 },
+            pose: { yaw: item.yaw, pitch: 0.18, z: item.z },
             appear: true,
             // Narrow layouts have no room around the phones for them.
             wideOnly: true
@@ -112,6 +112,7 @@ export class SceneKit {
         ],
         float: { amplitude: 0.18, speed: 0.7 + index * 0.13, phase: index * 1.9 },
         parallax: 0.32,
+        swing: item.yaw > 0 ? 1.4 : -1.4,
         introDelay: item.delay
       })
       this.actors.push(actor)

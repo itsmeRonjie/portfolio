@@ -64,7 +64,13 @@ const tabItems: TabItem[] = [
 ]
 const desktopItems = tabItems.filter((item) => item.key !== 'home')
 
-const sectionToKey: Record<string, string> = { work: 'work', 'play-store': 'work', toolbox: 'stack', contact: 'contact' }
+const sectionToKey: Record<string, string> = {
+  work: 'work',
+  'play-store': 'work',
+  toolbox: 'stack',
+  experience: 'about',
+  contact: 'contact'
+}
 const spied = useSectionSpy(Object.keys(sectionToKey))
 
 const activeKey = computed(() => {

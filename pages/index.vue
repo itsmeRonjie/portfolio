@@ -12,6 +12,7 @@
       <SectionWork />
       <SectionPlayStore />
       <SectionStack />
+      <SectionExperience />
       <SectionFooterCTA />
     </main>
   </StageRoot>
@@ -23,6 +24,7 @@ import SectionHero from '~/components/SectionHero.vue'
 import SectionPlayStore from '~/components/SectionPlayStore.vue'
 import SectionWork from '~/components/SectionWork.vue'
 import SectionStack from '~/components/SectionStack.vue'
+import SectionExperience from '~/components/SectionExperience.vue'
 import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
 import MoneyManagerLanding from '~/components/money-manager/MoneyManagerLanding.vue'
 import DinkBoardLanding from '~/components/dinkboard/DinkBoardLanding.vue'

@@ -40,7 +40,7 @@ export const createMoneyManagerScene: SceneFactory = (stage, { emit }) => {
       { slot: 'mm.hero', pose: { yaw: -0.3, pitch: 0.05, roll: -0.02 } },
       { slot: 'mm.gallery', wideOnly: true, pose: { yaw: 0.2, pitch: 0.03 } }
     ],
-    { float: { amplitude: 0.045, speed: 0.9 }, spin: 1.2, lift: 1.5, introDelay: 0.15, glow: 0.3 }
+    { float: { amplitude: 0.045, speed: 0.9 }, spin: 1.2, lift: 1.5, swing: -0.7, introDelay: 0.15, glow: 0.3 }
   )
 
   let clock = 0
