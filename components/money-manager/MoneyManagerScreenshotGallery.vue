@@ -79,7 +79,9 @@ const props = defineProps<{
 }>()
 
 const stage = useStage()
-const activeIndex = ref(0)
+// Start on the hero screen, matching the 3D phone (lib/three/scenes/moneyManager.ts).
+const heroIndex = props.screenshots.findIndex((shot) => shot.id === props.heroScreenshotId)
+const activeIndex = ref(Math.max(heroIndex, 0))
 const activeShot = computed(() => props.screenshots[activeIndex.value] ?? props.screenshots[0] ?? null)
 
 watch(

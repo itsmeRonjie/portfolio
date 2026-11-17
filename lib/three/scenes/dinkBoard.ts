@@ -55,19 +55,10 @@ export const createDinkBoardScene: SceneFactory = (stage, { score }) => {
 
   const followerPulse = createPulse(devices.follower)
   const watchPulse = createPulse(devices.watch)
-  const timers = new Set<number>()
-  const later = (ms: number, run: () => void) => {
-    const id = window.setTimeout(() => {
-      timers.delete(id)
-      run()
-    }, ms)
-    timers.add(id)
-  }
-
   const unsubscribe = score.subscribe((snapshot) => {
     host.set(snapshot)
-    later(140, () => wrist.set(snapshot))
-    later(320, () => follower.set(snapshot))
+    kit.later(140, () => wrist.set(snapshot))
+    kit.later(320, () => follower.set(snapshot))
     watchPulse.fire(0.14)
     followerPulse.fire(0.32)
   })
@@ -84,7 +75,7 @@ export const createDinkBoardScene: SceneFactory = (stage, { score }) => {
     busy = followerPulse.update(frame.dt) || busy
     busy = watchPulse.update(frame.dt) || busy
 
-    if (!frame.reducedMotion && devices.host.actor.currentSlot && now - lastInput > IDLE_AFTER_INPUT_SECONDS) {
+    if (!frame.reducedMotion && devices.host.actor.onScreen && now - lastInput > IDLE_AFTER_INPUT_SECONDS) {
       clock += frame.dt
       if (clock > AUTOPLAY_SECONDS) {
         clock = 0
@@ -124,9 +115,6 @@ export const createDinkBoardScene: SceneFactory = (stage, { score }) => {
     },
     dispose() {
       unsubscribe()
-      for (const id of timers) {
-        window.clearTimeout(id)
-      }
       kit.dispose()
     }
   }

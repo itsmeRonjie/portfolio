@@ -68,7 +68,8 @@
           </DeviceFrame>
         </StageSlot>
 
-        <div class="mt-4 flex justify-center gap-1.5" role="group" aria-label="App screens">
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+        <div class="flex justify-center gap-1.5" role="group" aria-label="App screens">
           <button
             v-for="(shot, index) in previewScreenshots"
             :key="shot.id"
@@ -84,6 +85,8 @@
             />
           </button>
         </div>
+        <StageMotionToggle />
+        </div>
       </div>
     </div>
   </section>
@@ -91,6 +94,7 @@
 
 <script setup lang="ts">
 import DeviceFrame from '~/components/stage/DeviceFrame.vue'
+import StageMotionToggle from '~/components/stage/StageMotionToggle.vue'
 import type { MoneyManagerSiteContent } from '~/data/moneyManagerSite'
 
 const props = defineProps<{
@@ -128,7 +132,7 @@ const selectScreen = (index: number) => {
 let interval: ReturnType<typeof setInterval> | null = null
 onMounted(() => {
   interval = setInterval(() => {
-    if (stage?.live.value || reducedMotion.value || previewScreenshots.value.length < 2) {
+    if (stage?.live.value || stage?.paused.value || reducedMotion.value || previewScreenshots.value.length < 2) {
       return
     }
     previewIndex.value = (previewIndex.value + 1) % previewScreenshots.value.length

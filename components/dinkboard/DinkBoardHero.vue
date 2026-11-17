@@ -94,10 +94,15 @@
             Undo
           </button>
         </div>
-        <p class="mt-3 text-center text-xs text-[#a9bf99]" aria-live="polite">
+        <!-- The visible score changes during demo autoplay, so only announce points the visitor scores. -->
+        <p class="sr-only" aria-live="polite">{{ announcement }}</p>
+        <div class="mt-3 flex flex-wrap items-center justify-center gap-3">
+        <p class="text-center text-xs text-[#a9bf99]">
           {{ teams.home }} {{ score.home }} – {{ score.away }} {{ teams.away }}
           <span class="text-[#6b8558]"> · demo scoring, synced to the watch and a nearby follower</span>
         </p>
+        <StageMotionToggle v-if="stage?.live.value" />
+        </div>
       </div>
     </div>
   </section>
@@ -106,6 +111,7 @@
 <script setup lang="ts">
 import DeviceFrame from '~/components/stage/DeviceFrame.vue'
 import DinkBoardScoreboard from '~/components/dinkboard/DinkBoardScoreboard.vue'
+import StageMotionToggle from '~/components/stage/StageMotionToggle.vue'
 import type { DinkBoardSiteContent } from '~/data/dinkBoardSite'
 import { INITIAL_SCORE, SCORE_TEAMS } from '~/lib/scoreStore'
 import type { ScoreSide } from '~/lib/scoreStore'
@@ -119,13 +125,23 @@ const stage = useStage()
 const teams = SCORE_TEAMS
 const score = computed(() => stage?.scoreState.value ?? INITIAL_SCORE)
 
+const announcement = ref('')
+const announce = () => {
+  const now = stage?.score.get()
+  if (now) {
+    announcement.value = `${teams.home} ${now.home}, ${teams.away} ${now.away}${now.winner ? ', game' : ''}`
+  }
+}
+
 const point = (side: ScoreSide) => {
   stage?.command('input')
   stage?.score.score(side)
+  announce()
 }
 
 const undo = () => {
   stage?.command('input')
   stage?.score.undo()
+  announce()
 }
 </script>

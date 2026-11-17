@@ -31,8 +31,10 @@ const { content } = useMoneyManagerSiteContent()
 const { isMoneyManagerFallbackPath } = useHostRouting()
 
 const homePath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager' : '/'))
-const supportPath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager/support' : content.supportPath))
+const supportPath = computed(() =>
+  isMoneyManagerFallbackPath.value ? '/money-manager/support' : content.value.supportPath
+)
 const privacyPath = computed(() =>
-  isMoneyManagerFallbackPath.value ? '/money-manager/privacy-policy' : content.privacyPath
+  isMoneyManagerFallbackPath.value ? '/money-manager/privacy-policy' : content.value.privacyPath
 )
 </script>

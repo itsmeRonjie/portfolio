@@ -79,6 +79,8 @@ export const loadTexture = async (url: string, anisotropy: number) => {
 
 export type ImageCyclerOptions = {
   urls: string[]
+  /** Index shown first. */
+  start?: number
   screen: { width: number; height: number; radius: number }
   bezel?: ColorRepresentation
 }
@@ -106,6 +108,8 @@ export class ImageCycler {
     private readonly bin: Disposer
   ) {
     this.textures = options.urls.map(() => null)
+    const count = options.urls.length
+    this.index = count ? (((options.start ?? 0) % count) + count) % count : 0
 
     this.placeholder = bin.track(new DataTexture(new Uint8Array([8, 12, 18, 255]), 1, 1))
     this.placeholder.colorSpace = SRGBColorSpace
@@ -134,7 +138,7 @@ export class ImageCycler {
 
     bin.track({ dispose: () => (this.disposed = true) })
 
-    void this.load(0).then((texture) => {
+    void this.load(this.index).then((texture) => {
       if (!texture) {
         return
       }
@@ -142,7 +146,7 @@ export class ImageCycler {
       this.material.uniforms.uCurrentAspect!.value = aspectOf(texture)
       this.power.target = 1
       this.stage.invalidate()
-      void this.load(1)
+      void this.load(this.index + 1)
     })
   }
 

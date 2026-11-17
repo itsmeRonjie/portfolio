@@ -54,7 +54,7 @@
             <button
               class="ui-cta-secondary mt-4 !px-4 !py-2"
               type="button"
-              @click="refresh"
+              @click="refresh()"
             >
               Retry
             </button>

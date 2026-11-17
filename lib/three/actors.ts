@@ -110,6 +110,11 @@ export class DockedActor implements StageActor {
     return this.station
   }
 
+  /** Whether the device was inside the viewport on the last frame. */
+  get onScreen() {
+    return this.root.visible
+  }
+
   slots(wide: boolean) {
     return this.options.stations.filter((station) => wide || !station.wideOnly).map((station) => station.slot)
   }
@@ -139,7 +144,9 @@ export class DockedActor implements StageActor {
 
     const { dt, time, reducedMotion } = frame
     this.time = time
-    const goal = this.goal(targets, frame)
+    // Without motion the device jumps straight to the nearest station instead of flying.
+    const rawGoal = this.goal(targets, frame)
+    const goal = reducedMotion ? Math.round(rawGoal) : rawGoal
 
     if (!this.primed) {
       this.primed = true
@@ -150,7 +157,7 @@ export class DockedActor implements StageActor {
     }
 
     // Scroll-scrubbed, then damped: flights ease out instead of stopping dead with the wheel.
-    this.progress = reducedMotion ? Math.round(goal) : damp(this.progress, goal, 9, dt)
+    this.progress = reducedMotion ? goal : damp(this.progress, goal, 9, dt)
 
     const last = targets.length - 1
     const index = clamp(Math.floor(this.progress), 0, Math.max(last - 1, 0))

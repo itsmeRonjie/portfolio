@@ -9,6 +9,9 @@ export type StageContext = {
   liveSlots: Ref<ReadonlySet<string>>
   /** True once the WebGL stage has drawn its first frame. */
   live: Ref<boolean>
+  /** Visitor paused automatic motion (floating, auto-advancing screens, demo scoring). Remembered per browser. */
+  paused: Ref<boolean>
+  setPaused(value: boolean): void
   registerSlot(id: string, element: HTMLElement): void
   unregisterSlot(id: string, element: HTMLElement): void
   pointer(slot: string, phase: StagePointerPhase, data: StagePointerData): void

@@ -362,6 +362,41 @@ section[id] {
   }
 }
 
+/* ---- Print / Save as PDF ---- */
+/* Show everything a visitor might not have scrolled to yet, and swap the WebGL layer */
+/* (which usually prints blank) for the static device mocks. */
+@media print {
+  .reveal-pending {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+  }
+
+  .stage-canvas,
+  .site-tabbar {
+    display: none !important;
+  }
+
+  .stage-slot.is-live .stage-slot__fallback {
+    opacity: 1 !important;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
+
+  .ui-marquee ul {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .ui-marquee li[aria-hidden='true'] {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

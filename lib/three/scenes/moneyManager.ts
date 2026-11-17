@@ -8,7 +8,12 @@ import { SceneKit } from './shared'
 const AUTO_CYCLE_SECONDS = 5
 const IDLE_AFTER_INPUT_SECONDS = 10
 
-export const moneyManagerScreens = moneyManagerSite.screenshots.filter((shot) => shot.textureSrc)
+// Same list and order as the hero dots and gallery list, starting on the hero screen.
+const screenUrls = moneyManagerSite.screenshots.map((shot) => shot.textureSrc ?? shot.src)
+const heroIndex = Math.max(
+  moneyManagerSite.screenshots.findIndex((shot) => shot.id === moneyManagerSite.heroScreenshotId),
+  0
+)
 
 /**
  * Money Manager app site: one teal Android phone cycling the real screenshots in the hero.
@@ -21,7 +26,7 @@ export const createMoneyManagerScene: SceneFactory = (stage, { emit }) => {
   const spec = phoneSpec('android')
   const cycler = new ImageCycler(
     stage,
-    { urls: moneyManagerScreens.map((shot) => shot.textureSrc!), screen: spec.screen },
+    { urls: screenUrls, start: heroIndex, screen: spec.screen },
     kit.bin
   )
 
@@ -51,7 +56,7 @@ export const createMoneyManagerScene: SceneFactory = (stage, { emit }) => {
     now = frame.time
     const busy = cycler.update(frame.dt)
     // Auto-advance only in the hero; in the gallery the visitor picks the screen.
-    if (!frame.reducedMotion && phone.actor.currentSlot === 'mm.hero' && now - lastInput > IDLE_AFTER_INPUT_SECONDS) {
+    if (!frame.reducedMotion && phone.actor.currentSlot === 'mm.hero' && phone.actor.onScreen && now - lastInput > IDLE_AFTER_INPUT_SECONDS) {
       clock += frame.dt
       if (clock > AUTO_CYCLE_SECONDS) {
         clock = 0

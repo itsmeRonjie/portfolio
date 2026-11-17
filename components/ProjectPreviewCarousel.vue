@@ -68,12 +68,11 @@ const org = toRef(props, 'org')
 const { repos, pending } = useGithubRepos(org)
 const previewRepos = computed(() => repos.value.slice(0, 6))
 const activeIndex = ref(0)
-const prefersReducedMotion = ref(false)
+const prefersReducedMotion = useReducedMotion()
 
 const swipeThreshold = 28
 
 let intervalId: ReturnType<typeof setInterval> | null = null
-let mediaQuery: MediaQueryList | null = null
 let isHovering = false
 let isDragging = false
 let hasSwiped = false
@@ -83,11 +82,6 @@ let startY = 0
 
 const previewImage = (repo: GithubRepo) =>
   `https://opengraph.githubassets.com/preview/${props.org}/${repo.name}`
-
-const handleMotionChange = (event: MediaQueryListEvent) => {
-  prefersReducedMotion.value = event.matches
-  startRotation()
-}
 
 const stopRotation = () => {
   if (intervalId) {
@@ -193,31 +187,13 @@ watch(
   { immediate: true }
 )
 
+watch(prefersReducedMotion, () => startRotation())
+
 onMounted(() => {
-  if (typeof window === 'undefined') {
-    return
-  }
-  mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-  prefersReducedMotion.value = mediaQuery.matches
-
-  if (mediaQuery.addEventListener) {
-    mediaQuery.addEventListener('change', handleMotionChange)
-  } else {
-    mediaQuery.addListener(handleMotionChange)
-  }
-
   startRotation()
 })
 
 onBeforeUnmount(() => {
   stopRotation()
-  if (!mediaQuery) {
-    return
-  }
-  if (mediaQuery.removeEventListener) {
-    mediaQuery.removeEventListener('change', handleMotionChange)
-  } else {
-    mediaQuery.removeListener(handleMotionChange)
-  }
 })
 </script>

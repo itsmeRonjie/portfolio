@@ -2,10 +2,8 @@
   <section class="relative mx-auto grid max-w-6xl items-center gap-8 px-5 pb-10 pt-8 sm:px-6 lg:min-h-[calc(100svh-var(--nav-h))] lg:grid-cols-[1.02fr_0.98fr] lg:gap-6 lg:pb-16 lg:pt-6">
     <div class="relative z-10 space-y-6">
       <p class="ui-eyebrow animate-stagger-in">Mobile Engineering</p>
-      <h1 class="ui-display animate-stagger-in [animation-delay:60ms]">
-        <!-- Never split the surname at its hyphen. -->
-        <span v-for="part in profile.name.split(' ')" :key="part" class="inline-block whitespace-nowrap [&:not(:last-child)]:mr-[0.25em]">{{ part }}</span>
-      </h1>
+      <!-- A real space between the names (for search engines and screen readers); the surname never splits at its hyphen. -->
+      <h1 class="ui-display animate-stagger-in [animation-delay:60ms]">{{ firstName }} <span class="whitespace-nowrap">{{ surname }}</span></h1>
       <h2 class="ui-tagline max-w-xl animate-stagger-in [animation-delay:120ms]">
         Shipping <span class="text-gradient">Android and iOS</span> products with studio-level polish.
       </h2>
@@ -60,7 +58,7 @@
             <img
               :key="activeShot?.id"
               class="h-full w-full object-cover object-top"
-              :src="activeShot?.textureSrc"
+              :src="activeShot?.textureSrc ?? activeShot?.src"
               :alt="activeShot?.alt"
               width="718"
               height="1600"
@@ -88,14 +86,18 @@
             />
           </button>
         </div>
-        <p class="text-center text-xs text-slate-400" aria-live="polite">
+        <!-- Not a live region: it changes on its own every few seconds. -->
+        <p class="text-center text-xs text-slate-400">
           <span class="text-accent">Money Manager</span> · {{ activeShot?.title }}
           <span class="mx-1.5 text-slate-600">/</span>
           <span class="text-accent-2">DinkBoard</span> · live score
         </p>
-        <p v-if="stage?.live.value" class="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 sm:block">
-          Drag a phone to spin it · tap to interact
-        </p>
+        <div v-if="stage?.live.value" class="flex flex-wrap items-center justify-center gap-3">
+          <p class="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 sm:block">
+            Drag a phone to spin it · tap to interact
+          </p>
+          <StageMotionToggle />
+        </div>
       </div>
     </div>
   </section>
@@ -103,6 +105,7 @@
 
 <script setup lang="ts">
 import DeviceFrame from '~/components/stage/DeviceFrame.vue'
+import StageMotionToggle from '~/components/stage/StageMotionToggle.vue'
 import DinkBoardScoreboard from '~/components/dinkboard/DinkBoardScoreboard.vue'
 import { moneyManagerSite } from '~/data/moneyManagerSite'
 import { INITIAL_SCORE } from '~/lib/scoreStore'
@@ -111,7 +114,10 @@ const profile = useProfile()
 const stage = useStage()
 
 const currentRole = profile.experience[0]
-const screens = moneyManagerSite.screenshots.filter((shot) => shot.textureSrc)
+const [firstName, ...surnameParts] = profile.name.split(' ')
+const surname = surnameParts.join(' ')
+// Same list and order as the 3D phone (lib/three/scenes/portfolio.ts), so indexes line up.
+const screens = moneyManagerSite.screenshots
 
 const scoreState = computed(() => stage?.scoreState.value ?? INITIAL_SCORE)
 const activeIndex = ref(0)

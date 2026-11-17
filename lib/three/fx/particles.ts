@@ -60,6 +60,8 @@ export type ParticleFieldOptions = {
 export class ParticleField implements StageActor {
   private readonly points: Points
   private readonly material: ShaderMaterial
+  private readonly geometry: BufferGeometry
+  private readonly count: number
   private fade = 0
 
   constructor(
@@ -68,6 +70,7 @@ export class ParticleField implements StageActor {
     bin: Disposer
   ) {
     const count = options.count ?? 150
+    this.count = count
     const positions = new Float32Array(count * 3)
     const seeds = new Float32Array(count)
     const sizes = new Float32Array(count)
@@ -82,6 +85,7 @@ export class ParticleField implements StageActor {
     }
 
     const geometry = bin.track(new BufferGeometry())
+    this.geometry = geometry
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
     geometry.setAttribute('aSeed', new Float32BufferAttribute(seeds, 1))
     geometry.setAttribute('aSize', new Float32BufferAttribute(sizes, 1))
@@ -127,6 +131,9 @@ export class ParticleField implements StageActor {
     const visibleHeight = Math.min(rect.top + rect.height, viewport.height) - Math.max(rect.top, 0)
     const target = onScreen ? clamp(visibleHeight / (rect.height * 0.6), 0, 1) : 0
     this.fade = frame.reducedMotion ? target : damp(this.fade, target, 3.5, frame.dt)
+
+    // The adaptive quality tier thins the field along with the resolution.
+    this.geometry.setDrawRange(0, Math.round(this.count * frame.quality))
 
     const uniforms = this.material.uniforms
     uniforms.uOpacity!.value = this.fade * (this.options.opacity ?? 0.85)

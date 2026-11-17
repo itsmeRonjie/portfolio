@@ -11,7 +11,8 @@ const AUTO_CYCLE_SECONDS = 4.6
 const AUTOPLAY_SECONDS = 3.4
 const IDLE_AFTER_INPUT_SECONDS = 8
 
-export const portfolioScreens = moneyManagerSite.screenshots.filter((shot) => shot.textureSrc)
+// Same list and order as the hero's dots (components/SectionHero.vue), so indexes line up.
+const screenUrls = moneyManagerSite.screenshots.map((shot) => shot.textureSrc ?? shot.src)
 
 /**
  * Home page story: an Android phone running Money Manager and an iPhone running a live
@@ -27,7 +28,7 @@ export const createPortfolioScene: SceneFactory = (stage, { emit, score }) => {
 
   const cycler = new ImageCycler(
     stage,
-    { urls: portfolioScreens.map((shot) => shot.textureSrc!), screen: android.screen },
+    { urls: screenUrls, screen: android.screen },
     kit.bin
   )
   const hostBoard = new ScoreboardScreen(
@@ -94,7 +95,7 @@ export const createPortfolioScene: SceneFactory = (stage, { emit, score }) => {
   const unsubscribe = score.subscribe((snapshot) => {
     hostBoard.set(snapshot)
     // The wrist mirror updates a beat later, as it would over the air.
-    window.setTimeout(() => watchBoard.set(snapshot), 160)
+    kit.later(160, () => watchBoard.set(snapshot))
     watchPulse.fire(0.16)
   })
 
@@ -117,14 +118,15 @@ export const createPortfolioScene: SceneFactory = (stage, { emit, score }) => {
 
     const idle = frame.time - lastInput > IDLE_AFTER_INPUT_SECONDS
     if (!frame.reducedMotion && idle) {
-      if (devices.android.actor.currentSlot && stage.slotRect(devices.android.actor.currentSlot)) {
+      // Only while the device is actually visible: no off-screen redraws or texture downloads.
+      if (devices.android.actor.onScreen) {
         screenClock += frame.dt
         if (screenClock > AUTO_CYCLE_SECONDS) {
           screenClock = 0
           showScreen(cycler.index + 1)
         }
       }
-      if (devices.ios.actor.currentSlot) {
+      if (devices.ios.actor.onScreen) {
         playClock += frame.dt
         if (playClock > AUTOPLAY_SECONDS) {
           playClock = 0

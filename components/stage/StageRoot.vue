@@ -33,14 +33,26 @@ const stopScore = score.subscribe((snapshot) => {
   scoreState.value = snapshot
 })
 
+const PAUSE_KEY = 'stage-motion-paused'
+const paused = ref(false)
+
 const slotElements = new Map<string, HTMLElement>()
 let stage: StageInstance | null = null
 let handle: SceneHandle | null = null
-let idleHandle = 0
+let cancelBoot: (() => void) | null = null
 let disposed = false
 
 const context: StageContext = {
   live,
+  paused,
+  setPaused(value) {
+    paused.value = value
+    try {
+      localStorage.setItem(PAUSE_KEY, value ? '1' : '0')
+    } catch {
+      // Storage can be unavailable (private mode, blocked site data); the pause still applies to this page.
+    }
+  },
   liveSlots,
   events,
   score,
@@ -74,7 +86,10 @@ const shouldRender = () => {
     return false
   }
   try {
-    return !!document.createElement('canvas').getContext('webgl2')
+    const probe = document.createElement('canvas').getContext('webgl2')
+    // Release the probe right away rather than leaving a live context for the garbage collector.
+    probe?.getExtension('WEBGL_lose_context')?.loseContext()
+    return !!probe
   } catch {
     return false
   }
@@ -110,6 +125,7 @@ const boot = async () => {
     stage = new module.Stage({
       canvas: element,
       reducedMotion: reducedMotion.value,
+      motionPaused: paused.value,
       resolveSlot: (id) => slotElements.get(id) ?? null,
       onContextLost: () => {
         // Losing the GPU mid-session: fall back to the static devices for the rest of the visit.
@@ -149,23 +165,29 @@ const boot = async () => {
 }
 
 watch(reducedMotion, (value) => stage?.setReducedMotion(value))
+watch(paused, (value) => stage?.setMotionPaused(value))
 
 onMounted(() => {
+  try {
+    paused.value = localStorage.getItem(PAUSE_KEY) === '1'
+  } catch {
+    // No storage: start unpaused.
+  }
+
   // Load three.js after the page is interactive so it never competes with first paint.
   const run = () => void boot()
-  if ('requestIdleCallback' in window) {
-    idleHandle = window.requestIdleCallback(run, { timeout: 1200 })
+  if (typeof window.requestIdleCallback === 'function') {
+    const id = window.requestIdleCallback(run, { timeout: 1200 })
+    cancelBoot = () => window.cancelIdleCallback(id)
   } else {
-    idleHandle = window.setTimeout(run, 300) as unknown as number
+    const id = window.setTimeout(run, 300)
+    cancelBoot = () => window.clearTimeout(id)
   }
 })
 
 onBeforeUnmount(() => {
   disposed = true
-  if ('cancelIdleCallback' in window) {
-    window.cancelIdleCallback(idleHandle)
-  }
-  window.clearTimeout(idleHandle)
+  cancelBoot?.()
   stopScore()
   teardown()
 })

@@ -27,6 +27,7 @@ export type Frame = {
   pointer: { x: number; y: number }
   /** >= 1024px: the scroll story's extra stations are active. */
   wide: boolean
+  /** Reduced-motion preference or the visitor's pause: no ambient or automatic motion. */
   reducedMotion: boolean
   /** 1 at full quality, lower after the adaptive tier steps down. */
   quality: number
@@ -62,6 +63,8 @@ export type SceneFactory = (stage: Stage, context: SceneContext) => SceneHandle 
 export type StageOptions = {
   canvas: HTMLCanvasElement
   reducedMotion: boolean
+  /** The visitor paused automatic motion; treated like reduced motion. */
+  motionPaused?: boolean
   resolveSlot: (id: string) => HTMLElement | null
   onContextLost?: () => void
   onWideChange?: (wide: boolean) => void
@@ -92,6 +95,9 @@ export class Stage {
   readonly maxAnisotropy: number
   wide: boolean
   reducedMotion: boolean
+  motionPaused: boolean
+  /** Loop counters; exposed as window.__stage in development to check that the loop sleeps. */
+  readonly stats = { ticks: 0, renders: 0, sleeps: 0, awake: [] as string[] }
 
   private readonly canvas: HTMLCanvasElement
   private readonly options: StageOptions
@@ -135,6 +141,10 @@ export class Stage {
     this.options = options
     this.canvas = options.canvas
     this.reducedMotion = options.reducedMotion
+    this.motionPaused = options.motionPaused ?? false
+    if (import.meta.dev) {
+      ;(window as unknown as { __stage?: Stage['stats'] }).__stage = this.stats
+    }
 
     // Throws when WebGL2 is unavailable; the caller treats that as "keep the static fallbacks".
     this.renderer = new WebGLRenderer({
@@ -230,6 +240,11 @@ export class Stage {
     this.invalidate()
   }
 
+  setMotionPaused(value: boolean) {
+    this.motionPaused = value
+    this.invalidate()
+  }
+
   /** Wake the loop and force at least one render. Safe to call from any event. */
   invalidate = () => {
     this.dirty = true
@@ -283,19 +298,28 @@ export class Stage {
     frame.pointer.x = damp(frame.pointer.x, this.pointerTarget.x, 6, frame.dt)
     frame.pointer.y = damp(frame.pointer.y, this.pointerTarget.y, 6, frame.dt)
     frame.wide = this.wide
-    frame.reducedMotion = this.reducedMotion
+    frame.reducedMotion = this.reducedMotion || this.motionPaused
+    this.stats.ticks += 1
     frame.quality = this.quality
     this.slotCache.clear()
 
     let active = false
-    for (const actor of this.actors) {
-      active = actor.update(frame) || active
+    if (import.meta.dev) {
+      this.stats.awake.length = 0
+    }
+    for (const [index, actor] of this.actors.entries()) {
+      const awake = actor.update(frame)
+      active = awake || active
+      if (import.meta.dev && awake) {
+        this.stats.awake.push(`${index}:${actor.constructor.name}`)
+      }
     }
 
     // One extra frame after the last actor leaves, so the canvas is cleared rather than left stale.
     if (active || this.dirty || this.wasActive) {
       this.renderer.render(this.scene, this.camera)
       this.dirty = false
+      this.stats.renders += 1
 
       if (this.onFirstFrame) {
         const callback = this.onFirstFrame
@@ -312,6 +336,7 @@ export class Stage {
       this.request()
     } else {
       this.asleep = true
+      this.stats.sleeps += 1
     }
   }
 

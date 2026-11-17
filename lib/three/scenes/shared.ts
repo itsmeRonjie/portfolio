@@ -24,6 +24,7 @@ export class SceneKit {
   readonly bin = new Disposer()
   readonly actors: StageActor[] = []
   private glow: Texture | null = null
+  private readonly timers = new Set<number>()
 
   constructor(readonly stage: Stage) {}
 
@@ -125,7 +126,20 @@ export class SceneKit {
     this.actors.push(new Ticker(callback))
   }
 
+  /** setTimeout that is cancelled when the scene is disposed. */
+  later(ms: number, run: () => void) {
+    const id = window.setTimeout(() => {
+      this.timers.delete(id)
+      run()
+    }, ms)
+    this.timers.add(id)
+  }
+
   dispose() {
+    for (const id of this.timers) {
+      window.clearTimeout(id)
+    }
+    this.timers.clear()
     this.bin.dispose()
   }
 }
