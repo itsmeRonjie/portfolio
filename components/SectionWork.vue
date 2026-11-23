@@ -20,13 +20,22 @@
       />
     </div>
 
-    <div v-if="others.length" class="mt-20 lg:mt-28">
+    <section v-if="professional.length" id="professional-work" aria-labelledby="professional-work-title" class="mt-20 lg:mt-28">
+      <h3 id="professional-work-title" v-reveal class="text-xl font-semibold text-white">Professional Work</h3>
+      <div class="mt-6 grid gap-5">
+        <div v-for="project in professional" :key="project.title" v-reveal>
+          <ProjectCard :project="project" />
+        </div>
+      </div>
+    </section>
+
+    <div v-if="repositories.length" class="mt-20 lg:mt-28">
       <div v-reveal class="flex items-center justify-between gap-4">
         <h3 class="text-xl font-semibold text-white">Dev Studio repositories</h3>
         <span class="ui-eyebrow">Open source</span>
       </div>
       <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <div v-for="(project, index) in others" :key="project.title" v-reveal="{ delay: index * 70 }">
+        <div v-for="(project, index) in repositories" :key="project.title" v-reveal="{ delay: index * 70 }">
           <ProjectCard :project="project" />
         </div>
       </div>
@@ -40,5 +49,6 @@ import ProjectCaseStudy from '~/components/ProjectCaseStudy.vue'
 
 const projects = useProjects()
 const featured = projects.filter((project) => project.featured)
-const others = projects.filter((project) => !project.featured)
+const professional = projects.filter((project) => project.professional)
+const repositories = projects.filter((project) => project.githubOrg)
 </script>

@@ -1,5 +1,9 @@
 <template>
-  <article v-tilt="{ max: 4 }" class="ui-panel flex h-full flex-col !rounded-3xl !p-4 transition-colors hover:border-accent/45">
+  <article
+    v-tilt="{ max: 4 }"
+    class="ui-panel flex h-full flex-col !rounded-3xl !p-4 transition-colors hover:border-accent/45"
+    :class="project.professional ? 'sm:grid sm:grid-cols-[14rem_minmax(0,1fr)] sm:items-center sm:gap-5' : ''"
+  >
     <div
       class="relative overflow-hidden rounded-2xl border border-border/70 bg-gradient-to-br p-3"
       :class="project.accent || resolveProjectAccent(project.tags)"
@@ -13,16 +17,24 @@
       </ClientOnly>
       <div
         v-else-if="project.previewImage"
-        class="relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 p-4 shadow-inner"
+        class="relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden rounded-2xl"
+        :class="project.professional ? '' : 'border border-white/10 bg-black/30 p-4 shadow-inner'"
       >
-        <img class="h-full w-full object-contain" :src="project.previewImage" :alt="project.previewAlt ?? project.title" loading="lazy" decoding="async" />
+        <img
+          class="object-contain"
+          :class="project.professional ? 'size-24 rounded-[1.4rem] shadow-panel sm:size-20 sm:rounded-[1.15rem]' : 'h-full w-full'"
+          :src="project.previewImage"
+          :alt="project.previewAlt ?? project.title"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div v-else class="relative aspect-[2/1] w-full rounded-2xl border border-white/10 bg-black/30 shadow-inner" />
     </div>
 
-    <div class="flex flex-1 flex-col gap-3 px-1 pb-1 pt-4">
+    <div class="flex flex-1 flex-col gap-3 px-1 pb-1 pt-4" :class="project.professional ? 'sm:py-1' : ''">
       <div class="flex flex-wrap items-center gap-2">
-        <h3 class="text-lg font-semibold text-white">{{ project.title }}</h3>
+        <h4 class="text-lg font-semibold text-white">{{ project.title }}</h4>
         <span
           v-if="project.isPlaceholder"
           class="ui-chip border-terminal/35 bg-terminal/10 !px-2 !py-1 !text-[10px] !tracking-[0.16em] text-terminal"
@@ -30,6 +42,9 @@
           Placeholder
         </span>
       </div>
+      <p v-if="project.professional" class="text-sm font-medium text-accent-2">
+        {{ project.professional.role }} · {{ project.professional.publisher }}
+      </p>
       <p class="text-sm leading-relaxed text-slate-300">{{ project.description }}</p>
       <div class="flex flex-wrap gap-1.5">
         <span v-for="tag in project.tags" :key="tag" class="ui-chip font-mono !px-2 !py-0.5 !text-[10px]" :class="resolveTagAccent(tag)">

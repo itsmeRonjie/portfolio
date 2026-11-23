@@ -10,6 +10,10 @@ export type Project = {
   previewImage?: string
   previewAlt?: string
   isPlaceholder?: boolean
+  professional?: {
+    role: string
+    publisher: string
+  }
   /** Shown as a full case study with a device the 3D stage docks into. */
   featured?: {
     slot: string
@@ -66,6 +70,18 @@ export const projects: Project[] = [
       playStoreId: 'itsme.ronjie.moneymanager'
     },
     previewAlt: 'Money Manager home dashboard screenshot'
+  },
+  {
+    title: 'Clock Me: Calendar & Tracking',
+    description: 'A calendar and time tracker for iPhone and iPad. Start tracking from a calendar event and compare planned time with actual time spent.',
+    bullets: [],
+    tags: ['iOS', 'iPadOS'],
+    accent: 'from-accent-2/25 via-[#7567e6]/15 to-transparent',
+    professional: { role: 'Main Developer', publisher: 'Vauldex, Inc.' },
+    link: 'https://apps.apple.com/us/app/clock-me-calendar-tracking/id6473386906',
+    linkLabel: 'View on the App Store',
+    previewImage: '/apps/clock-me/app-icon.jpg',
+    previewAlt: 'Clock Me app icon'
   },
   {
     title: 'Android Dev Studio Repositories',
