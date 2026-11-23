@@ -31,18 +31,27 @@
           :key="repo.id"
           class="absolute inset-0 transition-opacity duration-700"
           :class="index === activeIndex ? 'opacity-100' : 'opacity-0'"
+          :aria-hidden="index !== activeIndex"
         >
-          <img
-            class="h-full w-full object-cover"
-            :src="previewImage(repo)"
-            :alt="`${repo.name} preview`"
-            width="1280"
-            height="640"
-            loading="lazy"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-          <div class="absolute bottom-2 left-2 right-2 truncate text-[10px] font-semibold text-white">
-            {{ repo.name }}
+          <template v-if="!failedImages.has(repo.previewSrc)">
+            <img
+              class="h-full w-full object-cover"
+              :src="repo.previewSrc"
+              :alt="`${repo.name} preview`"
+              width="1280"
+              height="640"
+              loading="lazy"
+              @error="failedImages.add(repo.previewSrc)"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+            <div class="absolute bottom-2 left-2 right-2 truncate text-[10px] font-semibold text-white">
+              {{ repo.name }}
+            </div>
+          </template>
+          <div v-else class="flex h-full flex-col justify-center gap-1 p-4 sm:p-5">
+            <p class="truncate font-mono text-[10px] text-slate-300">{{ org }}</p>
+            <p class="truncate text-sm font-semibold text-white sm:text-base">{{ repo.name }}</p>
+            <p v-if="repo.language !== 'Unknown'" class="truncate text-xs text-slate-300">{{ repo.language }}</p>
           </div>
         </div>
       </div>
@@ -59,14 +68,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, toRef, watch } from 'vue'
-import type { GithubRepo } from '~/composables/useGithubRepos'
+import { computed, onMounted, onBeforeUnmount, reactive, ref, toRef, watch } from 'vue'
+import { githubRepoPreviewImages } from '~/data/githubOrgs'
 
 const props = defineProps<{ org: string }>()
 
 const org = toRef(props, 'org')
 const { repos, pending } = useGithubRepos(org)
-const previewRepos = computed(() => repos.value.slice(0, 6))
+const previewRepos = computed(() => repos.value.slice(0, 6).map((repo) => {
+  const slug = `${org.value}/${repo.name}`
+  return {
+    ...repo,
+    previewSrc: githubRepoPreviewImages[slug] ?? `https://opengraph.githubassets.com/preview/${slug}`
+  }
+}))
+const failedImages = reactive(new Set<string>())
 const activeIndex = ref(0)
 const prefersReducedMotion = useReducedMotion()
 
@@ -79,9 +95,6 @@ let hasSwiped = false
 let pointerId: number | null = null
 let startX = 0
 let startY = 0
-
-const previewImage = (repo: GithubRepo) =>
-  `https://opengraph.githubassets.com/preview/${props.org}/${repo.name}`
 
 const stopRotation = () => {
   if (intervalId) {

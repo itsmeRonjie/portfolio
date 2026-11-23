@@ -31,3 +31,9 @@ export const githubOrgs: GithubOrg[] = [
     description: 'Backend repositories and API services.'
   }
 ]
+
+// Use the repositories' uploaded social images directly instead of generating cards for them.
+export const githubRepoPreviewImages: Readonly<Record<string, string>> = {
+  'android-dev-studio/GWeather': 'https://repository-images.githubusercontent.com/1060493166/12620bab-dbc0-4610-87d4-1b55514516fe',
+  'kmp-dev-studio/Portfolio': 'https://repository-images.githubusercontent.com/1075082160/4db18fe1-1c89-475f-bf6c-4b4d7699dc8a'
+}
