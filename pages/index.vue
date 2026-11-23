@@ -5,26 +5,26 @@
   <div v-else-if="isDinkBoardHost">
     <DinkBoardLanding />
   </div>
-  <div v-else>
+  <StageRoot v-else scene="portfolio">
     <SiteNav />
     <main>
       <SectionHero />
-      <SectionTechnologies />
-      <SectionPlayStore />
       <SectionWork />
-      <SectionToolbox />
+      <SectionPlayStore />
+      <SectionStack />
+      <SectionExperience />
       <SectionFooterCTA />
     </main>
-  </div>
+  </StageRoot>
 </template>
 
 <script setup lang="ts">
 import SiteNav from '~/components/SiteNav.vue'
 import SectionHero from '~/components/SectionHero.vue'
-import SectionTechnologies from '~/components/SectionTechnologies.vue'
 import SectionPlayStore from '~/components/SectionPlayStore.vue'
 import SectionWork from '~/components/SectionWork.vue'
-import SectionToolbox from '~/components/SectionToolbox.vue'
+import SectionStack from '~/components/SectionStack.vue'
+import SectionExperience from '~/components/SectionExperience.vue'
 import SectionFooterCTA from '~/components/SectionFooterCTA.vue'
 import MoneyManagerLanding from '~/components/money-manager/MoneyManagerLanding.vue'
 import DinkBoardLanding from '~/components/dinkboard/DinkBoardLanding.vue'

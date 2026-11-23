@@ -10,6 +10,16 @@ export type Project = {
   previewImage?: string
   previewAlt?: string
   isPlaceholder?: boolean
+  /** Shown as a full case study with a device the 3D stage docks into. */
+  featured?: {
+    slot: string
+    device: 'android' | 'ios'
+    platforms: string
+    /** Short feature callouts floated around the device (taken from the app's own site). */
+    highlights: string[]
+    /** Google Play package id: shows the live rating and downloads when the listing is public. */
+    playStoreId?: string
+  }
 }
 
 export const projects: Project[] = [
@@ -26,6 +36,13 @@ export const projects: Project[] = [
     link: 'https://dinkboard.ronjiemanon.com',
     linkLabel: 'Open app site',
     previewImage: '/apps/dinkboard/dinkboard-app-icon.svg',
+    featured: {
+      slot: 'work.dinkboard',
+      device: 'ios',
+      platforms: 'Android · iOS · watchOS',
+      highlights: ['Singles & doubles', 'Rally scoring', 'Nearby sync', 'Apple Watch'],
+      playStoreId: 'itsme.ronjie.dinkboardapp'
+    },
     previewAlt: 'DinkBoard app icon'
   },
   {
@@ -41,6 +58,13 @@ export const projects: Project[] = [
     link: 'https://moneymanager.ronjiemanon.com',
     linkLabel: 'Open app site',
     previewImage: '/apps/money-manager/screen-home-latest.png',
+    featured: {
+      slot: 'work.money-manager',
+      device: 'android',
+      platforms: 'Android · Google Play',
+      highlights: ['Offline-first', 'Budgets & bills', 'Reports', 'Savings goals'],
+      playStoreId: 'itsme.ronjie.moneymanager'
+    },
     previewAlt: 'Money Manager home dashboard screenshot'
   },
   {

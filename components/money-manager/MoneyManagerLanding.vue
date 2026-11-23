@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#041310] text-[#e6f8f5]">
+  <StageRoot scene="money-manager" class="min-h-screen bg-[#041310] text-[#e6f8f5]">
     <MoneyManagerNav
       :play-store-url="content.playStoreUrl"
       :home-path="homePath"
@@ -16,7 +16,7 @@
       :support-email="content.supportEmail"
     />
     <MoneyManagerFinalCta :play-store-url="content.playStoreUrl" :support-path="supportPath" />
-  </div>
+  </StageRoot>
 </template>
 
 <script setup lang="ts">
@@ -31,8 +31,10 @@ const { content } = useMoneyManagerSiteContent()
 const { isMoneyManagerFallbackPath } = useHostRouting()
 
 const homePath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager' : '/'))
-const supportPath = computed(() => (isMoneyManagerFallbackPath.value ? '/money-manager/support' : content.supportPath))
+const supportPath = computed(() =>
+  isMoneyManagerFallbackPath.value ? '/money-manager/support' : content.value.supportPath
+)
 const privacyPath = computed(() =>
-  isMoneyManagerFallbackPath.value ? '/money-manager/privacy-policy' : content.privacyPath
+  isMoneyManagerFallbackPath.value ? '/money-manager/privacy-policy' : content.value.privacyPath
 )
 </script>

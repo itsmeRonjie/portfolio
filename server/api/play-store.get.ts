@@ -90,7 +90,8 @@ const getRatingStats = async (appId: string, score?: number, reviewCount?: numbe
     lang: PLAY_STORE_LANG,
     country: PLAY_STORE_COUNTRY,
     num: 200,
-    sort: gplay.sort.NEWEST
+    // The typings declare `sort` as an enum member rather than the enum object it is at runtime.
+    sort: (gplay.sort as unknown as { NEWEST: number }).NEWEST
   })
 
   const reviews = Array.isArray(reviewResponse?.data)

@@ -40,62 +40,68 @@
         </div>
       </div>
 
-      <div class="rounded-xl border border-[#385726]/80 bg-[#101b0e]/92 p-5 shadow-[0_28px_70px_rgba(0,0,0,0.45)] sm:p-6">
-        <div class="mb-5 flex items-start justify-between gap-3">
+      <div class="rounded-xl border border-[#385726]/80 bg-[#101b0e]/80 p-5 shadow-[0_28px_70px_rgba(0,0,0,0.45)] sm:p-6">
+        <div class="flex items-start justify-between gap-3">
           <div>
             <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[#a8c98f]">Live Score</p>
-            <h2 class="mt-2 text-xl font-semibold text-[#f2ffe9]">Host view preview</h2>
+            <h2 class="mt-2 text-xl font-semibold text-[#f2ffe9]">Host, watch, and nearby follower</h2>
           </div>
-          <img
-            class="h-12 w-12 rounded-lg border border-[#8bca1e]/45 bg-[#081008]"
-            :src="content.appIconPath"
-            alt=""
-            loading="eager"
-            decoding="async"
-          />
+          <img class="h-12 w-12 rounded-lg border border-[#8bca1e]/45 bg-[#081008]" :src="content.appIconPath" alt="" loading="eager" decoding="async" />
         </div>
 
-        <div class="rounded-lg border border-[#2e4b21] bg-[#071008] p-4">
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <div>
-              <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#9fbd86]">Home</p>
-              <p class="mt-1 text-lg font-semibold text-[#f6ffe9]">North End</p>
+        <!-- Three devices share one score. In 3D each one lights up as the point syncs to it. -->
+        <StageSlot id="db.stage" :interactive="false" class="relative mt-4 h-[440px] sm:h-[480px]">
+          <StageSlot id="db.follower" class="!absolute left-[2%] top-[12%] hidden h-[74%] w-[32%] sm:block">
+            <DeviceFrame variant="android" tone="court" class="-rotate-6 opacity-75">
+              <DinkBoardScoreboard :score="score" variant="follower" />
+            </DeviceFrame>
+          </StageSlot>
+          <StageSlot id="db.host" class="!absolute left-1/2 top-[2%] h-[94%] w-[44%] -translate-x-1/2 sm:left-[58%]">
+            <DeviceFrame variant="ios" tone="court">
+              <DinkBoardScoreboard :score="score" />
+            </DeviceFrame>
+          </StageSlot>
+          <StageSlot id="db.watch" class="!absolute bottom-[4%] right-[1%] h-[34%] w-[24%]">
+            <div class="flex h-full items-center justify-center">
+              <div class="h-[68%] overflow-hidden rounded-[28%] border-[3px] border-[#8f969e]/60 bg-black shadow-panel" style="aspect-ratio: 0.86">
+                <DinkBoardScoreboard :score="score" variant="watch" />
+              </div>
             </div>
-            <div class="rounded-lg border border-[#314a24] bg-[#101c0d] px-3 py-1 text-xs font-semibold text-[#d9efc6]">
-              Rally 11
-            </div>
-            <div class="text-right">
-              <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#9fbd86]">Away</p>
-              <p class="mt-1 text-lg font-semibold text-[#f6ffe9]">South Line</p>
-            </div>
-          </div>
+          </StageSlot>
+        </StageSlot>
 
-          <div class="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <div class="rounded-lg border border-[#8bca1e]/40 bg-[#17240f] p-5 text-center">
-              <p class="text-6xl font-semibold leading-none text-[#8bca1e]">8</p>
-              <p class="mt-2 text-xs font-semibold text-[#cce8b2]">Serving</p>
-            </div>
-            <div class="font-mono text-sm font-semibold text-[#ff7a2e]">:</div>
-            <div class="rounded-lg border border-[#3053c8]/45 bg-[#0e1430] p-5 text-center">
-              <p class="text-6xl font-semibold leading-none text-[#6f8aff]">6</p>
-              <p class="mt-2 text-xs font-semibold text-[#c2ccff]">Receiver</p>
-            </div>
-          </div>
-
-          <div class="mt-5 grid gap-3 sm:grid-cols-3">
-            <div class="rounded-lg border border-[#2d4622] bg-[#0f180d] p-3">
-              <p class="text-xs text-[#a9bf99]">Server</p>
-              <p class="mt-1 font-semibold text-[#f1ffe7]">1</p>
-            </div>
-            <div class="rounded-lg border border-[#2d4622] bg-[#0f180d] p-3">
-              <p class="text-xs text-[#a9bf99]">Undo</p>
-              <p class="mt-1 font-semibold text-[#f1ffe7]">Available</p>
-            </div>
-            <div class="rounded-lg border border-[#2d4622] bg-[#0f180d] p-3">
-              <p class="text-xs text-[#a9bf99]">Nearby</p>
-              <p class="mt-1 font-semibold text-[#f1ffe7]">#321 Public</p>
-            </div>
-          </div>
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <button
+            type="button"
+            class="rounded-lg border border-[#8bca1e]/45 bg-[#17240f] px-2 py-2.5 text-xs font-semibold text-[#cce8b2] transition active:scale-95 hover:border-[#8bca1e]/80 sm:text-sm"
+            @click="point('home')"
+          >
+            + {{ teams.home }}
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-[#3053c8]/55 bg-[#0e1430] px-2 py-2.5 text-xs font-semibold text-[#c2ccff] transition active:scale-95 hover:border-[#6f8aff]/80 sm:text-sm"
+            @click="point('away')"
+          >
+            + {{ teams.away }}
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-[#2d4622] bg-[#0f180d] px-2 py-2.5 text-xs font-semibold text-[#d9efc6] transition active:scale-95 enabled:hover:border-[#8bca1e]/60 disabled:opacity-40 sm:text-sm"
+            :disabled="!score.canUndo"
+            @click="undo"
+          >
+            Undo
+          </button>
+        </div>
+        <!-- The visible score changes during demo autoplay, so only announce points the visitor scores. -->
+        <p class="sr-only" aria-live="polite">{{ announcement }}</p>
+        <div class="mt-3 flex flex-wrap items-center justify-center gap-3">
+        <p class="text-center text-xs text-[#a9bf99]">
+          {{ teams.home }} {{ score.home }} – {{ score.away }} {{ teams.away }}
+          <span class="text-[#6b8558]"> · demo scoring, synced to the watch and a nearby follower</span>
+        </p>
+        <StageMotionToggle v-if="stage?.live.value" />
         </div>
       </div>
     </div>
@@ -103,10 +109,39 @@
 </template>
 
 <script setup lang="ts">
+import DeviceFrame from '~/components/stage/DeviceFrame.vue'
+import DinkBoardScoreboard from '~/components/dinkboard/DinkBoardScoreboard.vue'
+import StageMotionToggle from '~/components/stage/StageMotionToggle.vue'
 import type { DinkBoardSiteContent } from '~/data/dinkBoardSite'
+import { INITIAL_SCORE, SCORE_TEAMS } from '~/lib/scoreStore'
+import type { ScoreSide } from '~/lib/scoreStore'
 
 defineProps<{
   content: DinkBoardSiteContent
   supportPath: string
 }>()
+
+const stage = useStage()
+const teams = SCORE_TEAMS
+const score = computed(() => stage?.scoreState.value ?? INITIAL_SCORE)
+
+const announcement = ref('')
+const announce = () => {
+  const now = stage?.score.get()
+  if (now) {
+    announcement.value = `${teams.home} ${now.home}, ${teams.away} ${now.away}${now.winner ? ', game' : ''}`
+  }
+}
+
+const point = (side: ScoreSide) => {
+  stage?.command('input')
+  stage?.score.score(side)
+  announce()
+}
+
+const undo = () => {
+  stage?.command('input')
+  stage?.score.undo()
+  announce()
+}
 </script>

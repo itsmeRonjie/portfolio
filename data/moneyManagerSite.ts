@@ -10,6 +10,8 @@ export type MoneyManagerScreenshot = {
   id: string
   title: string
   src: string
+  /** Downsized copy used as a 3D screen texture (see scripts/build-screen-textures.sh). */
+  textureSrc?: string
   alt: string
   note: string
 }
@@ -144,6 +146,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'home-overview',
       title: 'Home dashboard',
       src: '/apps/money-manager/screen-home-latest.png',
+      textureSrc: '/apps/money-manager/tex/screen-home-latest.jpg',
       alt: 'MoneyManager home dashboard with total balance, debt and loan cards, account cards, and bottom navigation',
       note: 'The current home screen combines balance trends, debts and loans, account snapshots, and quick entry actions.'
     },
@@ -151,6 +154,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'transactions',
       title: 'Transactions list',
       src: '/apps/money-manager/screen-transactions.png',
+      textureSrc: '/apps/money-manager/tex/screen-transactions.jpg',
       alt: 'MoneyManager transactions screen with monthly totals, filter chips, transaction rows, and quick action buttons',
       note: 'Scan recent entries, switch transaction types, and jump between list and calendar views from one screen.'
     },
@@ -158,6 +162,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'edit-transaction',
       title: 'Transaction editor',
       src: '/apps/money-manager/screen-edit-transaction.png',
+      textureSrc: '/apps/money-manager/tex/screen-edit-transaction.jpg',
       alt: 'MoneyManager edit transaction screen with type picker, amount entry, account selector, and numeric keypad',
       note: 'Edit or add entries with focused amount input, account selection, and category mode controls.'
     },
@@ -165,6 +170,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'plan',
       title: 'Plan hub',
       src: '/apps/money-manager/screen-plan-overview.png',
+      textureSrc: '/apps/money-manager/tex/screen-plan-overview.jpg',
       alt: 'MoneyManager plan screen with budgets, goals, bills, recurring transactions, debts and loans, and debt payoff planner cards',
       note: 'The planning hub surfaces budgets, goals, bills, recurring entries, debts and loans, and payoff planning.'
     },
@@ -172,6 +178,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'reports',
       title: 'Reports breakdown',
       src: '/apps/money-manager/screen-reports-breakdown.png',
+      textureSrc: '/apps/money-manager/tex/screen-reports-breakdown.jpg',
       alt: 'MoneyManager reports screen showing spending tabs, monthly totals, and a category breakdown chart',
       note: 'Review spending totals and category breakdowns with the current reports dashboard.'
     },
@@ -179,6 +186,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'settings-finance',
       title: 'Finance settings',
       src: '/apps/money-manager/screen-settings.png',
+      textureSrc: '/apps/money-manager/tex/screen-settings.jpg',
       alt: 'MoneyManager settings screen with premium, account management, categories, rules, currency, and exchange rate settings',
       note: 'Manage premium tools, accounts, categories, rules, currency, and exchange rate preferences.'
     },
@@ -186,6 +194,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'settings-reminders',
       title: 'Automation and reminders',
       src: '/apps/money-manager/screen-settings-reminders.png',
+      textureSrc: '/apps/money-manager/tex/screen-settings-reminders.jpg',
       alt: 'MoneyManager settings screen with smart suggestions, daily transaction reminders, bill reminder offsets, and privacy mode',
       note: 'Configure automation, daily reminders, bill reminder offsets, sound, vibration, and privacy mode.'
     },
@@ -193,6 +202,7 @@ export const moneyManagerSite: MoneyManagerSiteContent = {
       id: 'theme-customization',
       title: 'Theme customization',
       src: '/apps/money-manager/screen-theme.png',
+      textureSrc: '/apps/money-manager/tex/screen-theme.jpg',
       alt: 'MoneyManager theme settings screen with visual style presets, color palettes, and font selection',
       note: 'Switch visual styles, palettes, and fonts to match the look you want.'
     }

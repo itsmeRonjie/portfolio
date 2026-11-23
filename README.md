@@ -49,5 +49,15 @@ Required GitHub secrets:
 - `alarmclock.ronjiemanon.com/privacy-policy` renders the Alarm Clock privacy policy.
 - `picklequeue.ronjiemanon.com/privacy-policy` renders the Pickle Queue privacy policy. Fallback route lives under `/pickle-queue/privacy-policy`.
 
+## 3D stage
+The home page and both app landing pages render their devices with three.js (WebGL2, which Apple devices run on Metal).
+- `lib/three/` - the engine: `stage.ts` (renderer, demand-driven loop, adaptive quality), `actors.ts` (devices that dock into DOM slots and fly between them on scroll), `devices/`, `screens/`, `fx/`, and one scene per page in `scenes/`.
+- `components/stage/` - `StageRoot` (lazy-loads the engine after first paint), `StageSlot` (a placeholder a device docks into; drag to spin, tap to interact) and `DeviceFrame` (the static CSS phone shown before and instead of WebGL).
+- Every slot server-renders a CSS fallback, so pages work without WebGL, with reduced motion, or with `?no3d` added to the URL.
+- Scroll story: stations that share the screen get a flight between them; stations further apart swap while both are off screen, so a device never drifts over unrelated sections.
+- In development, `window.__stageStep(frames)` advances the animation by hand and `window.__stageActors()` reports where each device is (useful in a background tab, where animation frames do not run).
+- The architecture view in the Stack section (`components/ArchitectureLayers.vue`, content in `data/architecture.ts`) is CSS 3D, not WebGL.
+- Money Manager screens use downsized textures in `public/apps/money-manager/tex/`. After replacing a screenshot, run `./scripts/build-screen-textures.sh` (macOS) and keep `textureSrc` in `data/moneyManagerSite.ts` in sync.
+
 ## Resume
 The download button points to `public/resume.pdf`. Replace it to update the resume.
