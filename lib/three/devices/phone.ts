@@ -61,12 +61,13 @@ export const phoneSpec = (variant: PhoneVariant): PhoneSpec =>
         depth: 0.178,
         radius: 0.2,
         bevel: 0.046,
-        screen: { width: 1.307, height: 2.91, radius: 0.158 }
+        // Inset the display within the flat glass while keeping the screenshot proportions.
+        screen: { width: 1.303, height: 2.901, radius: 0.158 }
       }
 
 export type PhoneOptions = {
   palette: PhonePalette
-  /** Material for the display; it owns its own content and corner masking. */
+  /** Material for the display content. The mesh defines the outer silhouette. */
   screenMaterial: Material
   /** Initials engraved on the back, or null for none. */
   monogram?: string | null
@@ -98,7 +99,7 @@ const monogramTexture = (text: string, color: string) => {
  * module, side buttons and a monogram. Facing +z, centred on the origin.
  */
 export const createPhone = (spec: PhoneSpec, options: PhoneOptions, bin: Disposer) => {
-  const { width, height, depth, radius, bevel, variant } = spec
+  const { width, height, depth, radius, bevel, variant, screen } = spec
   const { palette } = options
   const phone = new Group()
   const front = depth / 2
@@ -169,9 +170,12 @@ export const createPhone = (spec: PhoneSpec, options: PhoneOptions, bin: Dispose
   glass.position.z = front + LAYER
   phone.add(glass)
 
-  const screen = new Mesh(bin.track(new PlaneGeometry(spec.screen.width, spec.screen.height)), options.screenMaterial)
-  screen.position.z = front + LAYER * 2
-  phone.add(screen)
+  const display = new Mesh(
+    bin.track(roundedPlaneGeometry(screen.width, screen.height, screen.radius, 20)),
+    options.screenMaterial
+  )
+  display.position.z = front + LAYER * 2
+  phone.add(display)
 
   const sheen = new Mesh(face, reflection)
   sheen.position.z = front + LAYER * 3

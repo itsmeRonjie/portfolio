@@ -4,8 +4,7 @@ import {
   Group,
   Mesh,
   MeshPhysicalMaterial,
-  MeshStandardMaterial,
-  PlaneGeometry
+  MeshStandardMaterial
 } from 'three'
 import type { ColorRepresentation, Material } from 'three'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
@@ -74,7 +73,10 @@ export const createWatch = (
   glass.position.z = front + LAYER
   watch.add(glass)
 
-  const display = new Mesh(bin.track(new PlaneGeometry(screen.width, screen.height)), options.screenMaterial)
+  const display = new Mesh(
+    bin.track(roundedPlaneGeometry(screen.width, screen.height, screen.radius, 20)),
+    options.screenMaterial
+  )
   display.position.z = front + LAYER * 2
   watch.add(display)
 
